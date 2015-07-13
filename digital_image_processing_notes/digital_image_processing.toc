@@ -1,0 +1,21 @@
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}
+\contentsline {section}{\numberline {2}Digital Image Fundamentals}{1}{section.2}
+\contentsline {section}{\numberline {3}Intensity Transformations 灰度变换 and Spatial Filtering空间滤波}{1}{section.3}
+\contentsline {subsection}{\numberline {3.1}Background背景知识}{2}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Some Basic Intensity Transformation Functions一些基本的灰度变换函数}{2}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Histogram Processing直方图处理}{4}{subsection.3.3}
+\contentsline {subsubsection}{\numberline {3.3.1}Histogram Equalization直方图均衡}{5}{subsubsection.3.3.1}
+\contentsline {subsubsection}{\numberline {3.3.2}Histogram Matching(Specification)直方图匹配（规定化）}{8}{subsubsection.3.3.2}
+\contentsline {subsubsection}{\numberline {3.3.3}Local Histogram Processing局部直方图处理}{11}{subsubsection.3.3.3}
+\contentsline {subsubsection}{\numberline {3.3.4}Using Histogram Statistics for Image Enhancement在图像增强中使用直方图统计}{12}{subsubsection.3.3.4}
+\contentsline {subsection}{\numberline {3.4}Fundamentals of Spatial Filtering 空间滤波基础}{15}{subsection.3.4}
+\contentsline {subsubsection}{\numberline {3.4.1}Spatial Correlation and Convolution 空间相关与卷积}{16}{subsubsection.3.4.1}
+\contentsline {subsubsection}{\numberline {3.4.2}Vector Representation of Linear Filtering 线性滤波的向量表示}{17}{subsubsection.3.4.2}
+\contentsline {subsubsection}{\numberline {3.4.3}Generating Spatial Filter Masks 空间滤波器模板的产生}{17}{subsubsection.3.4.3}
+\contentsline {subsection}{\numberline {3.5}Smoothing Spatial Filters 平滑空间滤波器}{18}{subsection.3.5}
+\contentsline {subsubsection}{\numberline {3.5.1}Smoothing Linear Filters 平滑线性滤波器}{18}{subsubsection.3.5.1}
+\contentsline {subsubsection}{\numberline {3.5.2}Order-Statistic(Nonlinear) Filters 统计排序（非线性）滤波器}{19}{subsubsection.3.5.2}
+\contentsline {subsection}{\numberline {3.6}Sharpening Spatial Filters 锐化空间滤波器}{19}{subsection.3.6}
+\contentsline {subsubsection}{\numberline {3.6.1}Using the Second Derivative for Image Sharpening--The Laplacian 使用二阶微分进行图像锐化——拉普拉斯算子}{20}{subsubsection.3.6.1}
+\contentsline {subsubsection}{\numberline {3.6.2}Unsharp Masking and Highboost Filtering 非锐化掩蔽和高提升滤波}{21}{subsubsection.3.6.2}
+\contentsline {subsection}{\numberline {3.7}Combining Spatial Enhancement Methods 混合空间增强法}{22}{subsection.3.7}
