@@ -1,3 +1,3 @@
 My Note
 =============
-Private note of my study.
+Private note of study.
