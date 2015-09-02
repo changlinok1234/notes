@@ -8,11 +8,13 @@
 \usepackage{geometry}
 %利用 geometry 可以很方便的设置页面的大小
 \usepackage{amsmath,amsfonts,amssymb}
+\usepackage{mathrsfs}  %一些特殊数学符号
+\usepackage{color}
 %---------------------------------------------------------------------
 \linespread{1.5} %行间距
 \defaultfontfeatures{Mapping=tex-text}  %%如果没有它，会有一些 tex 特殊字符无法正常使用，比如连字符。
 \numberwithin{equation}{section}%%公式与章节关联
-\title{Digital Image Processing}
+\title{Digital Image Processing 数字图像处理}
 \renewcommand{\contentsname}{目录}
 \begin{document}
 \maketitle
@@ -30,7 +32,7 @@ image,principally for the purpose of contrast manipulation and image thresholdin
 灰度变换在图像的单个像素上操作，主要以对比度和阈值处理为目的。空间滤波涉及改善性能的操作。
 \subsection{Background背景知识}
 
-Spatial domain:which is simply the plane containing the pixels of an image.Spatialdomain techniques operate directly on the pixels of an image. 
+Spatial domain:which is simply the plane containing the pixels of an image.Spatial domain techniques operate directly on the pixels of an image. 
 
 空间域：简单的包含图像像素的平面。空间域技术直接在图像像素上操作。
 
@@ -45,11 +47,11 @@ The spatial domain processes:
 g(x,y)=T[f(x,y)]
 \end{equation}
 
- where $f(x,y)$ iis the input image,$g(x,y)$is the output image,and $T$ is an operator on $f$ defined over a neighborhood of point$(x,y)$.
+ where $f(x,y)$ is the input image,$g(x,y)$is the output image,and $T$ is an operator on $f$ defined over a neighborhood of point$(x,y)$.
 
  $f(x,y)$ 是输入图像，$g(x,y)$是处理后图像，$T$是在点$(x,y)$的邻域上定义的关于$f$的一种算子。
 
-The smallest possible neighborhood is of size $1*1,g$depends only on the value of $f$ at a single point $(x,y)$ and $T$ in Eq.\ref{3.1} become an intensity transformation function of the form \ref{3.2}
+The smallest possible neighborhood is of size $1*1,g$ depends only on the value of $f$ at a single point $(x,y)$ and $T$ in Eq.\ref{3.1} become an intensity transformation function of the form \ref{3.2}
 
 最小领域的大小为$1*1$时，$g$仅取决于点$(x,y)$处的$f$值，公式(\ref{3.1})中的$T$成为形如(\ref{3.2})的灰度(灰度级或映射)变换函数：
 \begin{equation} \label{3.2}   %？？？？
@@ -57,9 +59,9 @@ The smallest possible neighborhood is of size $1*1,g$depends only on the value o
 \end{equation}
 \subsection{Some Basic Intensity Transformation Functions一些基本的灰度变换函数}
 
-Three basic types of functions used frequently for image enhancement:linear(negative and identity transformations),logarithmic(log and inverse-log transformations),and power-law(nth power and nth root transformations).
+Three basic types of functions used frequently for image enhancement:linear(negative and identity transformations),logarithmic(log and inverse-log transformations),and power-law($n$th power and $n$th root transformations).
 
-图像增强常用的三类基本函数：线性函数（反转和恒等变换）、对数函数（对数和反对数变换）和幂律函数）（n次幂和n次根变换）
+图像增强常用的三类基本函数：线性函数（反转和恒等变换）、对数函数（对数和反对数变换）和幂律函数）（$n$次幂和$n$次根变换）
 
 \begin{description}
 \item[Image Negatives]such as $s=L-1-r$， figure3.3 in P130
@@ -108,7 +110,7 @@ Similarly,the components of the histogram of the light image are biased toward t
 
 在暗图像中，直方图的分量集中在灰度级的低（暗）端。亮图像直方图的分量则倾向于灰度级的高端。低对比度图像具有较窄的直方图，且集中于灰度级的中部，高对比度图像中直方图的分量覆盖了很宽的灰度级范围，且像素的分布没有不太均匀，只有少量垂线比其他的高许多。P73
 
-Intuitively,an image whose pixelstend to occupy the entire range of possible intensity levels and tend to be distributed uniformly,will have an appearance of high contrast and will exhibit a large variety of gray tones.The net effect will be an image that shows aa great deal of gray-level detail and has high dynamic range. 
+Intuitively,an image whose pixels tend to occupy the entire range of possible intensity levels and tend to be distributed uniformly,will have an appearance of high contrast and will exhibit a large variety of gray tones.The net effect will be an image that shows aa great deal of gray-level detail and has high dynamic range. 
 
 若一幅图像的像素倾向于占据整个可能的灰度级并且分布均匀，则该图像会有高对比度的外观并展示灰色调的较大变化。最终效果将是一幅灰度细节丰富且动态范围较大的图像。
 \subsubsection{Histogram Equalization直方图均衡}
@@ -273,9 +275,9 @@ for a value of $q$
 G(z_{q})=s_{k}
 \end{equation}
 
-where $p_z(z_{i})$ is the ith value of the specified histogram.
+where $p_z(z_{i})$ is the $i$th value of the specified histogram.
 
-$p_z(z_{i})$是规定的直方图的第i个值
+$p_z(z_{i})$是规定的直方图的第$i$个值
 \begin{equation} \label {3.16}
 z_{q}=G^{-1}(s_{k})
 \end{equation}
@@ -430,7 +432,7 @@ Correlation of a function with a discrete unit impulse yields a rotated version 
 
 一个函数与离散单位冲击相关，在该冲击位置产生这个函数的一个翻转的版本。
 
-A fundermental property of convolution is that convolving a function with a unit impulse yields a copy of the function at the lacation of the impulse.
+A fundermental property of convolution is that convolving a function with a unit impulse yields a copy of the function at the location of the impulse.
 
 卷积的基本特性是某个函数与某个单位冲激卷积，得到一个在该冲激处的这个函数的拷贝。
 
@@ -588,20 +590,217 @@ A process that has been used to sharpen images consists of subtracting an unshar
 
 \subsection{Combining Spatial Enhancement Methods 混合空间增强法}
 
+%------------------------------------------------------------------------
+\section{Filtering in the Frequeccy Domain 频率域滤波}
 
+Filter:A device or material for suppressing or minimizing waves or oscillations of certain frequencies.
 
+滤波器：抑制或最小化某些频率的波或震荡的装置或材料。
 
+\subsection{Background 背景}
 
+\subsection{Preliminary Concepts 基本概念}
 
+\begin{equation} \label{4.1}
+C=R+jI
+\end{equation}
+
+Fourier Series
+
+傅里叶级数
+
+\begin{equation} \label{4.2}
+f(t)=\sum_{n=-\infty}^{\infty}c_{n}e^{j\frac{2\pi n}{T}t}
+\end{equation}
+
+\begin{equation} \label{4.3}
+c_{n}=\frac{1}{T}\int_{\frac{-T}{2}}^{\frac{T}{2}}f(t)e^{-j\frac{2\pi n}{T}t}dt \qquad  for \quad n= 0,\pm1,\pm2, \ldots
+\end{equation}
+
+\begin{equation} \label{4.4}
+\int_{-\infty}^{\infty}f(t)\delta(t)dt=f(0)
+\end{equation}
+
+\begin{equation} \label{4.5}
+\int_{-\infty}^{\infty}f(t)\delta(t-t_{0})dt=f(t_{0})
+\end{equation}
   
+The Fourier transform of a continuous function$f(t)$
+
+连续函数$f(t)$的傅里叶变换
+
+\begin{equation} \label{4.6}
+\mathscr{F}\{f(t)\}=F(\mu)=\int_{-\infty}^{\infty}f(t)e^{-j2\pi n\mu t}dt
+\end{equation}
+
+\begin{equation} \label{4.7}
+f(t)=\int_{-\infty}^{\infty}F(\mu)e^{j2\pi n\mu t}d\mu
+\end{equation}
+
+\subsection{Sampling and the Fourier Transform of Sampled 取样和取样函数的傅里叶变换}
+
+In practice,the effects of aliasing can be reduced by smoothing the input function to attenuate its higher frequencies.Has to be done before the function is sampled because aliasing is a sampling issue that can not be ``undone after the fact ''using computational techniques.
+
+实践中，可以通过平滑输入函数减少高频分量的方法降低混淆的影响。必须在函数被取样之前完成，因为混淆是取样问题，不能使用计算技术“事后取消”。
+
+\subsection{The Discrete Fourier Transform(DFT) of One Variable 单变量的离散傅里叶变换（DFT）}
+
+Discrete Fourier transform:
+
+离散傅里叶变换：
+
+\begin{equation} \label{4.8}
+F_{m}=\sum_{n=0}^{M-1}f_{n}e^{-j\frac{2\pi mn}{M}} \quad m=0,1,2,\ldots,M-1
+\end{equation}
+
+\begin{equation} \label{4.9}
+F(u)=\sum_{x=0}^{M-1}f(x)e^{-j\frac{2\pi ux}{M}} \quad u=0,1,2,\ldots,M-1
+\end{equation}
+
+Inverse discrete Fourier transform:
+
+傅里叶反变换（IDFT）：
+
+\begin{equation} \label{4.10}
+f_{n}=\frac{1}{M}\sum_{m=0}^{M-1}F_{m}e^{j\frac{2\pi mn}{M}} \quad n=0,1,2,\ldots,M-1
+\end{equation}
+
+\begin{equation} \label{4.11}
+f(x)=\frac{1}{M}\sum_{u=0}^{M-1}F(u)e^{j\frac{2\pi ux}{M}} \quad x=0,1,2,\ldots,M-1
+\end{equation}
+
+Eq.\ref{4.9} and Eq.\ref{4.11} denote the 1-D DFT pair.
+
+公式\ref{4.9} 和公式\ref{4.11}表示一维DFT对。
+
+Both the forward and inverse discrete transforms are infinitely periodic,wiith period M.
+
+离散傅里叶正反变换都是无限周期的，其周期为M。
+
+\begin{equation} \label{4.12}
+f(x)\star h(x)=\sum_{m=0}^{M-1}f(m)h(x-m) \quad x=0,1,2,\ldots,M-1
+\end{equation}
+
+\ref{4.12} gives one period of the periodic convolution.
+
+\ref{4.12} 给出周期卷积的一个周期。
+
+\subsubsection{Relationship Between the Sampling and Frequency Intervals 取样和频率间隔的关系}
+
+If $f(x)$ consists of $M$ samples of a function $f(t)$ taken $ \Delta  T$ units apart,the duration of the record comprising the set  $\{f(x)\},x=0,1,2,\ldots ,M-1, $ is 
+
+如果$f(x)$由函数$f(t)$以$ \Delta  T$为单位间隔取样后的$M$个样本组成，则包含集合$\{f(x)\},x=0,1,2,\ldots ,M-1, $的记录的持续时间是
+
+\begin{equation} \label{4.13}
+T=M\Delta T
+\end{equation}
+
+
+The corresponding spacing,$\Delta u$ in the discrete frequency domain
+
+离散频率域中的相应间隔$\Delta u$来自
+
+\begin{equation} \label{4.14}
+\Delta u=\frac{1}{M\Delta T}=\frac{1}{T}
+\end{equation}
+ 
+The entire frequency range spanned by the $M$ components of the DFT is
+
+由DFT的$M$个分量跨越的整个频率范围是
+
+\begin{equation} \label{4.15}
+\Omega =M\Delta u=\frac{1}{\Delta T}
+\end{equation}
+
+\subsection{Extension to Functions of Two Variables 两个变量的函数扩展}
+
+The impulse,$\delta(t,z)$,of two continuous variables,$t$ and $z$ :
+
+两个连续变量$t$和$z$的冲激$\delta(t,z)$：
+
+\begin{equation} \label{4.16}
+\delta(t,z) = \left\{ \begin{array}{ll}
+\infty & \textrm{if $t=z=0$}\\
+0 & \textrm{otherwise}\\
+\end{array} \right.
+\end{equation}
+
+\begin{equation} \label{4.17}
+\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}\delta(t,z)dtdz=1
+\end{equation}
+
+Impulse located at coordinates$(t_{0},z_{0})$
+
+\begin{equation} \label{4.18}
+\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}f(t,z)\delta(t-t_{0},z-z_{0})dtdz=f(t_{0},z_{0})
+\end{equation}
+
+For discrete variables x and y,the 2-D impulse :
+
+对于离散变量x,y二维离散冲激：
+
+\begin{equation} \label{4.19}
+\delta(x,y) = \left\{ \begin{array}{ll}
+1 & \textrm{if $x=y=0$}\\
+0 & \textrm{otherwise}\\
+\end{array} \right.
+\end{equation}
+
+The two-dimensional continuous Fourier transform pair is:
+
+二维连续傅里叶变换对：
+
+\begin{equation} \label{4.20}
+F(\mu,v)=\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}f(t,z)e^{-j2\pi (\mu t+vz)}dtdz
+\end{equation}
+
+\begin{equation} \label{4.21}
+f(t,z)=\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}F(\mu,v)e^{j2\pi (\mu t+vz)}d\mu dv
+\end{equation}
+
+Band-limited function $f(t,z)$ can be recovered with no error from a set of its samples if the sampling intervals are 
+
+如果取样间隔满足
+
+\begin{equation} \label{4.22}
+\Delta T<\frac{1}{2\mu_{max}}
+\end{equation}
+
+and 
+
+\begin{equation} \label{4.23}
+\Delta Z<\frac{1}{2v_{max}}
+\end{equation}
+
+or
+
+\begin{equation} \label{4.24}
+\frac{1}{\Delta T}>2\mu_{max}
+\end{equation}
+
+and 
+
+\begin{equation} \label{4.25}
+\frac{1}{\Delta Z}>2v_{max}
+\end{equation}
+
+则连续带限函数$f(t,z)$可以由其一组样本无误地恢复。
+
+Perfect reconstruction of a band-limited image function from a set of its samples requires 2-D convolution in the spatial domain with a sinc function.
+
+由样本集合完美地重建一个带限图像函数要求在空间域用$sinc$函数做二维卷积。
+
+To reduce aliasing,it is a good idea to blur an image slightly before shrinking it.
+
+为减小混淆，最好在缩小图像之前模糊一下图像。
+
+{\color{red}{那放大图像会不会产生模糊？需不需要在放大之前缩小取样频率？}}
+
+An alternate technique is to super-sampled the original scene and the reduce its size by row and column deletion.
 
 
 
-
-
-
-
-
+	   
 
 
 
