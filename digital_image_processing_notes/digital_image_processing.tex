@@ -1,25 +1,213 @@
-\documentclass[a4paper,12pt]{article}
-%%--------------------------------------------------------------------
-%packages
-\usepackage{zhfontcfg}
-\usepackage{indentfirst}
-\usepackage{hyperref}%生成可链接目录
-%段前空格
+\documentclass[12pt]{article}
+%%---------------------------------------------------------------------
+% packages
+% geometry
 \usepackage{geometry}
-%利用 geometry 可以很方便的设置页面的大小
-\usepackage{amsmath,amsfonts,amssymb}
-\usepackage{mathrsfs}  %一些特殊数学符号
-\usepackage{color}
-%---------------------------------------------------------------------
-\linespread{1.5} %行间距
+% font
+\usepackage{fontspec}
 \defaultfontfeatures{Mapping=tex-text}  %%如果没有它，会有一些 tex 特殊字符无法正常使用，比如连字符。
+\usepackage{xunicode,xltxtra}
+\usepackage[BoldFont,SlantFont,CJKnumber,CJKchecksingle]{xeCJK}  % \CJKnumber{12345}: 一万二千三百四十五
+\usepackage{CJKfntef}  %%实现对汉字加点、下划线等。
+\usepackage{pifont}  % \ding{}
+% math
+\usepackage{amsmath,amsfonts,amssymb}
+% color
+\usepackage{color}
+\usepackage{xcolor}
+\definecolor{EYE}{RGB}{199,237,204}
+\definecolor{FLY}{RGB}{128,0,128}
+\definecolor{ZHY}{RGB}{139,0,255}
+% graphics
+\usepackage[americaninductors,europeanresistors]{circuitikz}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows,shadows,shapes,calc,mindmap,trees,backgrounds}  % placements=positioning
+\usepackage{graphicx}  % \includegraphics[]{}
+\usepackage{subfigure}  %%图形或表格并排排列
+% table
+\usepackage{colortbl,dcolumn}  %% 彩色表格
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{booktabs}
+% code
+\usepackage{fancyvrb}
+\usepackage{listings}
+% title
+\usepackage{titlesec}
+% head/foot
+\usepackage{fancyhdr}
+% ref
+\usepackage{hyperref} %生成可链接目录
+% pagecolor
+\usepackage[pagecolor={EYE}]{pagecolor}
+% tightly-packed lists
+\usepackage{mdwlist}
+\usepackage{verbatim}%comment命令的注释包
+\usepackage{styles/iplouccfg}
+\usepackage{styles/zhfontcfg}
+\usepackage{styles/iplouclistings}
+\usepackage{indentfirst}
+\usepackage{mathrsfs} %一些特殊数学符号
+\usepackage{extarrows}%添加上下可加文字的长等号
+%%---------------------------------------------------------------------
+% settings
+% geometry
+\geometry{left=2cm,right=1cm,top=2cm,bottom=2cm}  %设置 上、左、下、右 页边距
+\linespread{1.5} %行间距
+% font
+\setCJKmainfont{Adobe Kaiti Std}
+%\setmainfont[BoldFont=Adobe Garamond Pro Bold]{Apple Garamond}  % 英文字体
+%\setmainfont[BoldFont=Adobe Garamond Pro Bold,SmallCapsFont=Apple Garamond,SmallCapsFeatures={Scale=0.7}]{Apple Garamond}  %%苹果字体没有SmallCaps
+\setCJKmonofont{Adobe Fangsong Std}
+% graphics
+\graphicspath{{figures/}}
+\tikzset{
+    % Define standard arrow tip
+    >=stealth',
+    % Define style for boxes
+    punkt/.style={
+           rectangle,
+           rounded corners,
+           draw=black, very thick,
+           text width=6.5em,
+           minimum height=2em,
+           text centered},
+    % Define arrow style
+    pil/.style={
+           ->,
+           thick,
+           shorten <=2pt,
+           shorten >=2pt,},
+    % Define style for FlyZhyBall
+    FlyZhyBall/.style={
+      circle,
+      minimum size=6mm,
+      inner sep=0.5pt,
+      ball color=red!50!blue,
+      text=white,},
+    % Define style for FlyZhyRectangle
+    FlyZhyRectangle/.style={
+      rectangle,
+      rounded corners,
+      minimum size=6mm,
+      ball color=red!50!blue,
+      text=white,},
+    % Define style for zhyfly
+    zhyfly/.style={
+      rectangle,
+      rounded corners,
+      minimum size=6mm,
+      ball color=red!25!blue,
+      text=white,},
+    % Define style for new rectangle
+    nrectangle/.style={
+      rectangle,
+      draw=#1!50,
+      fill=#1!20,
+      minimum size=5mm,
+      inner sep=0.1pt,}
+}
+\ctikzset{
+  bipoles/length=.8cm
+}
+% code
+\lstnewenvironment{VHDLcode}[1][]{%
+  \lstset{
+    basicstyle=\footnotesize\ttfamily\color{black},%
+    columns=flexible,%
+    framexleftmargin=.7mm,frame=shadowbox,%
+    rulesepcolor=\color{blue},%
+%    frame=single,%
+    backgroundcolor=\color{yellow!20},%
+    xleftmargin=1.2\fboxsep,%
+    xrightmargin=.7\fboxsep,%
+    numbers=left,numberstyle=\tiny\color{blue},%
+    numberblanklines=false,numbersep=7pt,%
+    language=VHDL%
+    }\lstset{#1}}{}
+\lstnewenvironment{VHDLmiddle}[1][]{%
+  \lstset{
+    basicstyle=\scriptsize\ttfamily\color{black},%
+    columns=flexible,%
+    framexleftmargin=.7mm,frame=shadowbox,%
+    rulesepcolor=\color{blue},%
+%    frame=single,%
+    backgroundcolor=\color{yellow!20},%
+    xleftmargin=1.2\fboxsep,%
+    xrightmargin=.7\fboxsep,%
+    numbers=left,numberstyle=\tiny\color{blue},%
+    numberblanklines=false,numbersep=7pt,%
+    language=VHDL%
+    }\lstset{#1}}{}
+\lstnewenvironment{VHDLsmall}[1][]{%
+  \lstset{
+    basicstyle=\tiny\ttfamily\color{black},%
+    columns=flexible,%
+    framexleftmargin=.7mm,frame=shadowbox,%
+    rulesepcolor=\color{blue},%
+%    frame=single,%
+    backgroundcolor=\color{yellow!20},%
+    xleftmargin=1.2\fboxsep,%
+    xrightmargin=.7\fboxsep,%
+    numbers=left,numberstyle=\tiny\color{blue},%
+    numberblanklines=false,numbersep=7pt,%
+    language=VHDL%
+    }\lstset{#1}}{}
+% pdf
+\hypersetup{pdfauthor={Haiyong Zheng},%
+            pdftitle={Title},%
+            CJKbookmarks=true,%
+            bookmarksnumbered=true,%
+            bookmarksopen=false,%
+            plainpages=false,%
+            colorlinks=true,%
+            citecolor=green,%
+            filecolor=magenta,%
+            linkcolor=cyan,%red(default)
+            urlcolor=cyan}
+% section
+%http://tex.stackexchange.com/questions/34288/how-to-place-a-shaded-box-around-a-section-label-and-name
+\newcommand\titlebar{%
+\tikz[baseline,trim left=3.1cm,trim right=3cm] {
+    \fill [cyan!25] (2.5cm,-1ex) rectangle (\textwidth+3.1cm,2.5ex);
+    \node [
+        fill=cyan!60!white,
+        anchor= base east,
+        rounded rectangle,
+        minimum height=3.5ex] at (3cm,0) {
+        \textbf{\thesection.}
+    };
+}%
+}
+\titleformat{\section}{\Large\bf\color{blue}}{\titlebar}{0.1cm}{}
+% head/foot
+\setlength{\headheight}{15pt}
+\pagestyle{fancy}
+\fancyhf{}
 \numberwithin{equation}{section}%%公式与章节关联
-\title{Digital Image Processing 数字图像处理}
-\renewcommand{\contentsname}{目录}
+%\lhead{\color{black!50!green}2014年秋季学期}
+\chead{\color{black!50!green}Digital Image Processing}
+%\rhead{\color{black!50!green}通信电子电路}
+\lfoot{\color{blue!50!green}常琳}
+%\cfoot{\color{blue!50!green}\href{http://vision.ouc.edu.cn/~zhenghaiyong}{CVBIOUC}}
+\rfoot{\color{blue!50!green}$\cdot$\ \thepage\ $\cdot$}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+%%---------------------------------------------------------------------
 \begin{document}
+%%---------------------------------------------------------------------
+%%---------------------------------------------------------------------
+% \titlepage
+\title{\vspace{-2em}Digital Image Processing 数字图像处理\vspace{-0.7em}}
+\author{常琳}
+\date{\vspace{-0.7em}2015年7月-\vspace{-0.7em}}
+%%---------------------------------------------------------------------
+\maketitle\thispagestyle{fancy}
+%%---------------------------------------------------------------------
 \maketitle
-%---------------------------------------------------------------------
-\tableofcontents%此处插入目录
+\tableofcontents 
+%----------------------------------------------------------------------
 \section{Introduction}
 %-----------------------------------------------------------------------
 \section{Digital Image Fundamentals}
@@ -788,6 +976,12 @@ and
 
 Perfect reconstruction of a band-limited image function from a set of its samples requires 2-D convolution in the spatial domain with a sinc function.
 
+\begin{description}
+
+\item [Image interpolation and resampling 图像内插和重取样]
+
+\end{description}
+
 由样本集合完美地重建一个带限图像函数要求在空间域用$sinc$函数做二维卷积。
 
 To reduce aliasing,it is a good idea to blur an image slightly before shrinking it.
@@ -798,9 +992,113 @@ To reduce aliasing,it is a good idea to blur an image slightly before shrinking 
 
 An alternate technique is to super-sampled the original scene and the reduce its size by row and column deletion.
 
+一种替代技术是对原始场景超取样，然后采用行-列删除法来减小（重采样）其大小。
 
+2-D Discrete Fourier Transform and Its Inverse:
 
+二维离散傅里叶变换及其反变换：
+
+\begin{equation} \label{4.26}
+F(u,v)=\sum_{x=0}^{M-1}\sum_{y=0}^{N-1}f(x,y)e^{-j2\pi(ux/M+vy/N)}
+\end{equation}
+
+where $f(x,y)$ is a dgital image of size $M*N$ . $u=0,1,2,\ldots,M-1$ and $v=0,1,2,\ldots,N-1$
+
+\begin{equation} \label{4.27}
+f(x,y)=\frac{1}{MN}\sum_{u=0}^{M-1}\sum_{v=0}^{N-1}F(u,v)e^{j2\pi(ux/M+vy/N)}
+\end{equation}
+
+$x=0,1,2,\ldots,M-1$ and $y=0,1,2,\ldots,N-1$
 	   
+\subsection{Some Properties of the 2-D Discrete Foutier Transform 二维离散傅里叶变换的一些性质}
+
+\subsubsection{Relationships Between Spatial and Frequency Intervals 空间和频域间隔关系}
+
+Let $\Delta T$ and $\Delta Z$ denote the separations between samples.The separations between the corresponding discrete,frequency domain variables are given by 
+
+令$\Delta T$和$\Delta Z$表示样本间的间隔，相应离散频域变量间的间隔由
+
+\begin{equation} \label{4.28}
+\Delta u=\frac{1}{M\Delta T}
+\end{equation}
+ 
+and 
+
+\begin{equation} \label{4.29}
+\Delta v=\frac{1}{N\Delta Z}
+\end{equation}
+
+给出。
+
+\subsubsection{Translation and Rotation 平移和旋转}
+
+\begin{equation} \label{4.30}
+f(x,y)e^{j2\pi (u_{0}x/M+v_{0}y/N)}\Leftrightarrow F(u-u_{0},v-v_{0})
+\end{equation}
+
+\begin{equation} \label{4.31}
+f(x-x_{0},y-y_{0})\Leftrightarrow F(u,v)e^{-j2\pi (x_{0}u/M+y_{0}v/N)}
+\end{equation}
+
+Rotating $f(x,y)$ by an angle $\theta_{0}$ rotates $F(u,v)$ by the same angle.Rotating $F(u,v)$ rotates $f(x,y)$ by the same angle.
+
+若$f(x,y)$旋转$\theta_{0}$角度，则$F(u,v)$也旋转相同角度。若$F(u,v)$ 旋转一个角度，$f(x,y)$ 也旋转相同角度。
+
+\subsubsection{Periodicity 周期性}
+
+\subsubsection{Symmetry Properties 对称性}
+
+Any real or complex function $w(x,y)$ can be expressed as the sum of an even and an odd part. 
+
+任意实函数或虚函数$w(x,y)$可表示为一个奇数部分和一个偶数部分。
+
+\begin{equation} \label{4.32}
+w(x,y)=w_{e}(x,y)+w_{o}(x,y)
+\end{equation}
+
+\begin{equation} \label{4.33}
+w_{e}(x,y)\xlongequal{\Delta}\frac{w(x,y)+w(-x,-y)}{2} 
+\end{equation}
+
+\begin{equation} \label{4.34}
+w_{o}(x,y)\xlongequal{\Delta}\frac{w(x,y)-w(-x,-y)}{2}
+\end{equation}
+
+Symmertry(antisymmetry) refer to symmetry(antisymmetry) about the center point of a sequence.  Indices to the right of the center point are positive,left are negative.Think only in terms of nonnegative indices the definitions of evenness and oddness become:
+
+对称（反对称）指的是关于序列中点的对称（反对称）。中心右侧指数考虑为正，左侧考虑为负。仅考虑非负指数项，奇和偶的定义变为：
+
+\begin{equation} \label{4.35}
+w_{e}(x,y)=w_{e}(M-x,N-y)
+\end{equation}
+
+\begin{equation} \label{4.36}
+w_{o}(x,y)=-w_{o}(M-x,N-y)
+\end{equation}
+
+$M$ and $N$ are the number of rows and columns of a 2-D array.
+
+$M$和$N$是二维阵列行数与列数。
+
+The only way that a discrete function can be odd is if all its samples sum to zero.
+
+离散函数为奇函数的唯一方法是其所有样本的和为零。
+
+The Fourier transform of a real function,$f(x,y)$,is conjugate symmetric:
+
+实函数$f(x,y)$的傅里叶变换是共轭对称的：
+
+\begin{equation} \label{4.37}
+F^{*}(u,v)=F(-u,-v)
+\end{equation}
+
+
+
+
+
+
+
+
 
 
 
