@@ -1092,12 +1092,130 @@ The Fourier transform of a real function,$f(x,y)$,is conjugate symmetric:
 F^{*}(u,v)=F(-u,-v)
 \end{equation}
 
+\begin{figure}[!htb] %插图
+\centering
+\includegraphics[width=0.8\textwidth]{symmetry_properties.png}
+\caption{对称性质}
+\label{fig:1}
+\end{figure}
+
+\subsubsection{Fourier Spectrum and Phase Angle 傅里叶谱和相角}
+
+The $arctan$ must be computed using a four-quadrant arctangent.
+
+$arctan$必须使用四象限反正切来计算。
+
+The Fourier transform of a real function is conjugate symmetric,which imply that the spectrum has even symmetry about the origin:
+
+实函数的傅里叶变换是共轭对称的，表明谱是关于原点偶对称的：
+
+\begin{equation} \label{4.38}
+|F(u,v)|=|F(-u,-v)|
+\end{equation} 
+
+The pahse angle exhibits the following odd symmetry about the origin:
+
+相角关于原点奇对称：
+
+\begin{equation} \label{4.39}
+\phi(u,v)=-\phi(-u,-v)
+\end{equation} 
+
+\begin{equation} \label{4.40}
+F(0,0)=\sum_{x=0}^{M-1}\sum_{y=0}^{N-1}f(x,y)
+\end{equation} 
+
+The zere-frequency term is proportional to the average value of $f(x,y)$.
+
+即零频率项与$f(x,y)$的平均值成正比。
+
+\begin{equation} \label{4.41}
+F(0,0)=MN\frac{1}{MN}\sum_{x=0}^{M-1}\sum_{y=0}^{N-1}=MN\overline{f}(x,y)
+\end{equation} 
+
+$\overline{f}$ denotes the average value of $f$.
+
+$\overline{f}$表示$f$的平均值。
+
+The components of the spectrum of the DFT determine the amplitude of the sinusoids that combine to form the resulting image.，In DFT a large amplitude implies a greater prominence of a sinusoid of that frequency in the image.
+
+DFT的谱的分量决定正弦波的幅度，这些正弦波结合起来可形成结果图像。图像的DFT变换中，较大的幅度意味着图像中该频率的正弦波比较突出。
+
+The phase is a measure of displacement of the various sinusoids with respect to their origin.
+
+相位是各个正弦分量关于原点的位移的度量。
+
+While the magnitude of the 2-D DFT is an array whose components determine the intensities in the image,the corresponding phase is an array of angles that carry much of the information about where discernable objects are located in the image(and determine shape characteristics and feature content).
+
+当二维DFT的幅度是一个阵列时，其分量决定了图像中的灰度，相应的相位则是一个角度的阵列，它携带较多关于图像中可辨别的物体定位的信息(还有决定形状特点和特性内容)。 
+
+\subsubsection{The 2-D Convolution Theorem 二维卷积定理}
+
+\begin{equation} \label{4.42}
+f(x,y)\star h(x,y)=\sum_{m=0}^{M-1}\sum_{n=0}^{N-1}f(m,n)h(x-m,y-n)
+\end{equation} 
+
+$x=0,1,2,\ldots,M-1$ and $y=0,1,2,\ldots,N-1$
+
+To obtain the same convolution result between the "straight" representation of the convolution equation approach and the DFT approach,functions in the latter must be padded prior to computing their transforms.
+
+若要使``直接'' 卷积公式法与DFT方法产生的卷积结果相同，后者必须对函数补足周期再计算它们的变换。
+
+Let $f(x,y)$ and $h(x,y)$ be two image arrays of sizes $A\times B$ and $C\times D$ Avoid wraparound error($f(x,y)$ and $h(x,y)$):
+
+令$f(x,y)$ 和 $h(x,y)$分别是大小为 $A\times B$ 和 $C\times D$像素的图像阵列，避免缠绕错误（二维下）：
+
+Append zeros to both functions so that they have the same length,denoted by P.
+
+把0加到两个函数中，使它们具有相同的长度，用P表示。
+
+\begin{equation} \label{4.43}
+f_{p}(x,y) = \left\{ \begin{array}{ll}
+f(x,y) & \textrm{$0\leq x\leq A-1$ and $0\leq y\leq B-1$}\\
+0 & \textrm{$A\leq x\leq P$ or $B\leq y\leq Q$ }\\
+\end{array} \right.
+\end{equation}
+
+\begin{equation} \label{4.44}
+h_{p}(x,y) = \left\{ \begin{array}{ll}
+h(x,y) & \textrm{$0\leq x\leq C-1$ and $0\leq y\leq D-1$}\\
+0 & \textrm{$C\leq x\leq P$ or $D\leq y\leq Q$ }\\
+\end{array} \right.
+\end{equation}
+
+with 
+
+$P\geq A+C-1$ and $Q\geq B+D-1$
+
+DFT algorithms tend to execute faster with arrays of even size,so select P and Q as the smallest even integers.
+
+一般DFT算法对偶数尺寸阵列执行较快，因此P和Q最好选择最小偶整数。
+
+\subsubsection{Summary of 2-D Discrete Fourier Transform Properties 二维离散傅里叶变换性质小结}
+
+\newpage
+
+\begin{figure}[!htb] %插图
+\centering
+\includegraphics[width=1\textwidth]{DFTsummary.png}
+\caption{DFT定义及相应表达式总结}
+\label{fig:2}
+\end{figure}\newpage
+
+\begin{figure}[!htb] %插图
+\centering
+\includegraphics[width=1\textwidth]{summary_of_DFTpairs.png}
+\caption{DFT对的小结}
+\label{fig:3}
+\end{figure}\newpage
 
 
 
+\subsection{The Basic of Filtering in the Frequency Domain 频率域滤波基础}
 
+Filtering techniques in the frequency domain are based on modifying the Fourier transform to achieve a specific objective and then computing the inverse DFT to get us back to the image domain.
 
-
+频率中的滤波技术是以如下处理为基础的：修改傅里叶变换以达到特殊目的，然后计算IDFT返回到图像域。
 
 
 
