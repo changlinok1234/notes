@@ -1217,6 +1217,74 @@ Filtering techniques in the frequency domain are based on modifying the Fourier 
 
 频率中的滤波技术是以如下处理为基础的：修改傅里叶变换以达到特殊目的，然后计算IDFT返回到图像域。
 
+\begin{comment}
+{\color{red}{A filter $H(u,v)$ that is 0 at the center of the transform and 1 elsewhere.It would reject the dc term and "pass" all other terms of $F(u,v)$ when$H(u,v)F(u,v)$---why?}}
+
+{\color{red}{滤波器$H(u,v)$在变换处的中心是0在其他地方是1，乘积$H(u,v)F(u,v)$将抑制$F(u,v)$的直流项``通''所有其他项。————啥意思？？}}
+
+\end{comment}
+
+Any spatial truncation of the filter to implement zero-padding will introduce discontinuities ,which will then in general result in ringing in the frequency domain.
+
+任何实现0填充的滤波器的空间截断将引入不连续性，通常会在频率域导致振铃现象。
+
+\begin{description}
+\item [Summary of Steps for filterong in the Frequency Domain]
+\end{description}
+
+\begin{enumerate}
+\item An input image $f(x,y)$ of size $M\times N$,obtain the padding parameters $P$ and $Q$,typicallly $P=2M$,$Q=2N$  
+
+\item Form $f_{p}(x,y)$ of size $P\times Q$ by appending zeros to $f(x,y)$
+
+\item Multiply $f_{x,y}$ by $(-1)^{x+y}$ to center its transform
+
+\item Compute the DFT from step 3
+
+\item Generate a real,symmetric filter function,$H(u,v)$ of size $P\times Q$ with center at coordinates$(P/2,Q/2)$.$G(u,v)=H(u,v)F(u,v)$
+
+\item $g_{p}(x,y)={real[\mathscr{F}^{-1}[G(u,v)]]}(-1)^{x+y}$, the real part is selected in order to ignore parasitic complex components resulting from computational inaccuracies.
+
+\item Obtain the final processed result,$g(x,y)$,by extracting the $M\times N$ region from the top,left quadrant of $g_{p}(x,y)$ 
+
+
+\end{enumerate}
+
+\begin{description}
+\item [频率域滤波步骤总结]
+\end{description}
+
+\begin{enumerate}
+\item 大小为$M\times N$的输入图像$f(x,y)$，得到填充参数$P$ 和 $Q$，通常$P=2M$，$Q=2N$  
+
+\item 对$f(x,y)$添加0形成大小为$P\times Q$的填充后图像$f_{p}(x,y)$
+
+\item 用 $(-1)^{x+y}$乘以$f_{x,y}$移到其变换的中心
+
+\item 计算来自步骤3的DFT
+
+\item 生成实的、对称的滤波函数$H(u,v)$，大小为$P\times Q$，中心在$(P/2,Q/2)$。$G(u,v)=H(u,v)F(u,v)$
+
+\item $g_{p}(x,y)={real[\mathscr{F}^{-1}[G(u,v)]]}(-1)^{x+y}$，为忽略由于计算不准确导致的寄生复分量，选择了实部。
+
+\item 从$g_{p}(x,y)$ 的左上限提取$M\times N$区域，得到最终处理结果$g(x,y)$
+
+\end{enumerate}
+
+When we speak of spatial convolution in terms of the convolution theorem and the DFT,it is implied periodic functions.Convolution in the context of the DFT involves functions of the same size.
+
+当根据卷积定理和DFT谈到空间卷积时，意味着对周期函数卷积。在DFT的意义上，卷积包含相同尺寸的函数。
+
+Once we have selected a specific filter via experimentation in the frequency domain,the actual imlentation of the method usually is done in the spatial domain.
+
+一旦我们在频率域通过实验选择了一个特定的滤波器，该方法的实际实现通常在空间域完成。
+
+\subsection{Image Smoothng Using Frequecy Domain Flters 使用频率域滤波器平滑到图像}
+
+ 
+
+ 
+
 
 
 
