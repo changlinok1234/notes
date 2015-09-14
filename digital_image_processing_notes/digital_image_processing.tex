@@ -1281,9 +1281,83 @@ Once we have selected a specific filter via experimentation in the frequency dom
 
 \subsection{Image Smoothng Using Frequecy Domain Flters 使用频率域滤波器平滑到图像}
 
- 
+\subsubsection{Ideal Lowpass Flters 理想低通滤波器}
 
- 
+For high order values,the Butterworth filter approachs the ideal filter.
+
+当阶数值较高时，布特沃斯滤波器接近于理想滤波器。
+
+$D(u,v)$ is the distance between a point$(u,v)$ in the frequency domain and the center of the frequency rectangle:
+
+$D(u,v)$是频率域中心点$(u,v)$与频率矩形中心的距离：
+
+\begin{equation} \label{4.45}
+D(u,v)=[(u-P/2)^{2}+(v-Q/2)^{2}]^{1/2}
+\end{equation}
+
+Total Image power 
+
+总图像功率
+
+\begin{equation} \label{4.46}
+P_{T}=\sum_{u=0}^{P-1}\sum_{v=0}^{Q-1}P(u,v)
+\end{equation}
+
+A circle of radius $D_{0}$ with origin at the center of the frequency rectangle encloses $\alpha$ percent of the power,where
+
+原点位于频率矩形中心处，半径为$D_{0}$的圆将包含$\alpha$\%的功率，其中
+
+\begin{equation} \label{4.47}
+\alpha=100[\sum_{u}\sum_{v}P(u,v)/P_{T}]
+\end{equation}
+
+\subsubsection{Butterworth Lowpass Filters 布特沃斯低通滤波器}  
+
+\begin{equation} \label{4.48}
+H(u,v)=\frac{1}{1+[D(u,v)/D_{0}]^{2n}}
+\end{equation}
+
+Unlike the ILPF,the BLPF transfer function does not have a sharp discontinuity that gives a clear cutoff between passed and filtered frequencies.
+
+与ILPF不同，BLPF没有在通过频率和滤除频率之间给出明显截止的尖锐的不连续性。
+
+BLPFs of order 2 are a good compromise between effective lowpass filtering and acceptable ringing.
+
+二阶BLPF是在有效的低通滤波和可接受的振铃特性之间的好的折中。
+
+\subsubsection{Gaussian Lowpass Filters 高斯低通滤波器}
+
+\begin{equation} \label{4.49}
+H(u,v)=e^{-D^{2}(u,v)/2\sigma^{2}}
+\end{equation} 
+
+By letting $\sigma=D_{0}$,
+
+\begin{equation} \label{4.50}
+H(u,v)=e^{-D^{2}(u,v)/2D_{0}^{2}}
+\end{equation} 
+
+where $D_{0}$ is cutoff frequency.When $D=D_{0}$,GLPF is down to 0.607 of its maximum value.
+
+$D_{0}$是截止频率，当 $D=D_{0}$时，GLPF下降到最大值的0.607处。
+
+The inverse Fourier transform of the GLPF is Gaussian also so that a spatial Gaussian filter,obtained by computing the IDFT,will have no ringing.
+
+GLPF的傅里叶反变换也是高斯的，故通过IDFT得到的空间高斯滤波器将没有振铃。
+
+GLPF achieved slightly less smoothing than the BLPF of order 2 for the same cutoff frequency.Because the profile of the GLPF is not as "tight" as the profile of the BLPF of order 2.
+
+GLPF与二阶BLPF相比，导致的平滑结果要稍差。因为GLPF的剖面图不想二阶BLPF那样``紧凑''。
+
+Any type of artifact is unacceptable:GLPF
+
+任何类型的人工缺陷不可接受：GLPF。
+
+Tight control of the transition between low and high frequencies about the cutoff frequency are needed:BLPF.
+
+需要严格控制低频和高频之间截止频率的过渡：BLPF。
+
+\subsection{Image Sharpening Using Frequency Domain Filters 使用频率域滤波器锐化图像} 
 
 
 
