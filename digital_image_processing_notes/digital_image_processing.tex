@@ -1359,6 +1359,135 @@ Tight control of the transition between low and high frequencies about the cutof
 
 \subsection{Image Sharpening Using Frequency Domain Filters 使用频率域滤波器锐化图像} 
 
+Image sharpening can be achieved by highpass filtering.
+
+图像锐化可用高通滤波实现。
+
+\subsubsection{Ideal Highpass Filters}
+
+The constant background in all images is zero in these highpass-filtered images.
+
+所有图像的恒定背景在高通滤波后的图像中都是0。
+
+\subsubsection{Butterworth Highpass Filters 布特沃斯高通滤波器}
+
+\begin{equation} \label{4.51}
+H(u,v)=\frac{1}{1+[D_{0}/D(u,v)]^{2n}}
+\end{equation}
+
+$D(u,v)$ given by Eq.\ref{4.45}
+
+\subsubsection{Gaussian Highpass Filters 高斯高通滤波器}
+
+\begin{equation} \label{4.52}
+H(u,v)=1-e^{-D^{2}(u,v)/2D_{0}^{2}}
+\end{equation} 
+
+\subsubsection{The Laplacian in the Frequenc Domain 频率域的拉普拉斯算子}
+
+The Laplacian image is obtained as :
+
+拉普拉斯变换图像由下式得到：
+
+\begin{equation} \label{4.53}
+\nabla^{2}f(x,y)=\mathscr{F}^{-1}\{H(u,v)F(u,v)\}
+\end{equation} 
+
+Enhancement is achieved using the equation:
+
+增强可用下式实现：
+
+\begin{equation} \label{4.54}
+g(x,y)=f(x,y)+c\nabla^{2}f(x,y)
+\end{equation} 
+
+$c=-1$ because $H(u,v)$ is negative.
+
+Problem of Eq.\ref{4.53}:introduce DFT scaling factors.
+
+式\ref{4.53}会引入已标定系数的DFT。
+
+\subsubsection{Unsharp Masking Highboost Filtering and High-Frequency-Emphasis Filtering 钝化模板、高提升滤波和高频强调滤波}
+
+\begin{equation} \label{4.55}
+g_{mask}(x,y)=f(x,y)-f_{LP}(x,y)
+\end{equation} 
+
+\begin{equation} \label{4.56}
+f_{LP}(x,y)=\mathscr{F}^{-1}[H_{LP}(u,v)F(u,v)]
+\end{equation} 
+
+$H_{LP}(u,v)$ is a lowpass filter , $f_{LP}(x,y)$ is a smoothed image analogous to $\overline{f}(x,y)$ 
+
+$H_{LP}(u,v)$是低通滤波器，$f_{LP}(x,y)$是平滑后的图像，类似于$\overline{f}(x,y)$。
+
+\begin{equation} \label{4.57}
+g(x,y)=f(x,y)+k*g_{mask}(x,y)
+\end{equation} 
+
+This expression defines unsharp masking when $k=1$ and highboost filtering when $k>1$.
+
+表达式定义了$k=1$时的钝化模板和$k>1$时的高提升滤波器。
+
+\begin{equation} \label{4.58}
+g(x,y)=\mathscr{F}^{-1}\{[1+k*[1-H_{LP}(u,v)]]F(u,v)\}
+\end{equation} 
+
+and 
+
+\begin{equation} \label{4.59}
+g(x,y)=\mathscr{F}^{-1}\{[1+k*H_{LP}(u,v)]F(u,v)\}
+\end{equation} 
+
+The expression contained within the square brackets is called a high-frequency -emphasis filter.The more general formulation is:
+
+方括号中的表达式称为高频强调滤波器。更一般的公式为：
+
+\begin{equation} \label{4.60}
+g(x,y)=\mathscr{F}^{-1}\{[k_{1}+k_{2}*H_{LP}(u,v)]F(u,v)\}
+\end{equation}
+
+$k_{1}\geq 0$ gives controls of the offset from the origin
+
+$k_{1}\geq 0$给出了控制距原点的偏移量。
+
+\subsubsection{Homomophic Filtering 同态滤波}
+
+Summary of steps in homomorphic filtering:
+
+同态滤波技术总结：
+
+$f(x,y)\Rightarrow \ln\Rightarrow DFT\Rightarrow H(u,v)\Rightarrow (DFT)^{-1}\Rightarrow exp\Rightarrow g(x,y)$
+
+A procedure for improving the appearance of an image by simultaneous intensity range compression({\color{blue}{$\ln$}}) and contrast enhancement({\color{blue}{filter}}).
+
+该过程通过同事压缩灰度范围（{\color{blue}{$\ln$}}）和增强对比度（{\color{blue}{filter}}）来改善一副图像的表现。
+
+\subsection{Selective Filtrering 选择性滤波}
+
+\subsubsection{Bandreject and Bandpass Filters 带阻滤波器和带通滤波器}
+
+\subsubsection{Notch Filters 陷波滤波器}
+
+Notch filter rejects(or pass) frequences in a predefined neighborhood about the center of the frequency rectangle.
+
+陷波滤波器拒绝（或通过）事先定义的关于频率矩形中心的一个邻域的频率。
+
+\begin{equation} \label{4.61}
+D_{k}(u,v)=[(u-M/2-u_{k})^{2}+(v-N/2-v_{k})^{2}]^{1/2}
+\end{equation}
+
+\begin{equation} \label{4.62}
+D_{-k}(u,v)=[(u-M/2+u_{k})^{2}+(v-N/2+v_{k})^{2}]^{1/2}
+\end{equation}
+
+\subsection{Implementation 实现}
+
+
+
+
+ 
+
 
 
 
