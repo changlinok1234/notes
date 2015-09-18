@@ -1483,6 +1483,42 @@ D_{-k}(u,v)=[(u-M/2+u_{k})^{2}+(v-N/2+v_{k})^{2}]^{1/2}
 
 \subsection{Implementation 实现}
 
+\subsubsection{Separability of the 2-D DFT 二维DFT的可分性}
+
+The 2-D DFT of $f(x,y)$ can be obtained by computing the 1-D transform of each row of $f(x,y)$ and then computing the 1-D transform along each column of the result.
+
+  
+$f(x,y)$的二维DFT可通过计算$f(x,y)$每一行一维变换，然后沿着计算结果的每一列计算一维变换来得到。
+
+\subsubsection{Computing the IDFT Using a DFT Algorithm 用DFT算法计算IDFT}
+
+Taking the complex conjugate of both sides of Eq.\ref{4.27} and multiplying the results by $MN$ yields:
+
+\begin{equation} \label{4.63}
+MNf^{*}(x,y)=\sum_{u=0}^{M-1}\sum_{v=0}^{N-1}F^{*}(u,v)e^{-j2\pi(ux/M+vy/N)}
+\end{equation}
+ 
+Eq\ref{4.63} indicates that if we substitute $F^{*}(u,v)$ into an algorithm designed to compute the 2-D forward Fourier transform,the result will be $MN*f(x,y)$ .Taking the complex conjugate and dividing this result by $MN$ yields $f(x,y)$.But this s a frequent source of confusion.
+
+ 
+式\ref{4.63}指出， 如果我们把$F^{*}(u,v)$带入计算二维傅里叶正变换所设计的算法中，结果将是$MN*f(x,y)$。取复共轭并将该结果除以$MN$，将得到$f(x,y)$。但也是引起混乱的常见原因。
+
+\subsubsection{The Fast Fourier Transform(FFT) 快速傅里叶变换}
+
+$MN\log _{2}MN$ multiplications and additions
+
+乘法和加法次数：$MN\log _{2}MN$ 
+
+USE Separability of the 2-D DFT.
+
+这里也用到了二维DFT的可分性。
+
+
+
+
+
+
+
 
 
 
