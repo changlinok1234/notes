@@ -779,6 +779,9 @@ A process that has been used to sharpen images consists of subtracting an unshar
 \subsection{Combining Spatial Enhancement Methods 混合空间增强法}
 
 %------------------------------------------------------------------------
+
+
+
 \section{Filtering in the Frequeccy Domain 频率域滤波}
 
 Filter:A device or material for suppressing or minimizing waves or oscillations of certain frequencies.
@@ -974,13 +977,13 @@ and
 
 则连续带限函数$f(t,z)$可以由其一组样本无误地恢复。
 
-Perfect reconstruction of a band-limited image function from a set of its samples requires 2-D convolution in the spatial domain with a sinc function.
-
 \begin{description}
 
 \item [Image interpolation and resampling 图像内插和重取样]
 
 \end{description}
+
+Perfect reconstruction of a band-limited image function from a set of its samples requires 2-D convolution in the spatial domain with a sinc function.
 
 由样本集合完美地重建一个带限图像函数要求在空间域用$sinc$函数做二维卷积。
 
@@ -988,7 +991,7 @@ To reduce aliasing,it is a good idea to blur an image slightly before shrinking 
 
 为减小混淆，最好在缩小图像之前模糊一下图像。
 
-{\color{red}{那放大图像会不会产生模糊？需不需要在放大之前缩小取样频率？}}
+%{\color{red}{那放大图像会不会产生模糊？需不需要在放大之前缩小取样频率？buxuyao}}
 
 An alternate technique is to super-sampled the original scene and the reduce its size by row and column deletion.
 
@@ -1161,7 +1164,7 @@ To obtain the same convolution result between the "straight" representation of t
 
 若要使``直接'' 卷积公式法与DFT方法产生的卷积结果相同，后者必须对函数补足周期再计算它们的变换。
 
-Let $f(x,y)$ and $h(x,y)$ be two image arrays of sizes $A\times B$ and $C\times D$ Avoid wraparound error($f(x,y)$ and $h(x,y)$):
+Let $f(x,y)$ and $h(x,y)$ be two image arrays of sizes $A\times B$ and $C\times D$. Avoid wraparound error($f(x,y)$ and $h(x,y)$):
 
 令$f(x,y)$ 和 $h(x,y)$分别是大小为 $A\times B$ 和 $C\times D$像素的图像阵列，避免缠绕错误（二维下）：
 
@@ -1444,7 +1447,7 @@ The expression contained within the square brackets is called a high-frequency -
 方括号中的表达式称为高频强调滤波器。更一般的公式为：
 
 \begin{equation} \label{4.60}
-g(x,y)=\mathscr{F}^{-1}\{[k_{1}+k_{2}*H_{LP}(u,v)]F(u,v)\}
+g(x,y)=\mathscr{F}^{-1}\{[k_{1}+k_{2}*H_{HP}(u,v)]F(u,v)\}
 \end{equation}
 
 $k_{1}\geq 0$ gives controls of the offset from the origin
@@ -1465,6 +1468,10 @@ A procedure for improving the appearance of an image by simultaneous intensity r
 
 \subsection{Selective Filtrering 选择性滤波}
 
+Similar to Local Histogram Processing .
+
+有点像局部直方图处理那一块。
+
 \subsubsection{Bandreject and Bandpass Filters 带阻滤波器和带通滤波器}
 
 \subsubsection{Notch Filters 陷波滤波器}
@@ -1480,6 +1487,10 @@ D_{k}(u,v)=[(u-M/2-u_{k})^{2}+(v-N/2-v_{k})^{2}]^{1/2}
 \begin{equation} \label{4.62}
 D_{-k}(u,v)=[(u-M/2+u_{k})^{2}+(v-N/2+v_{k})^{2}]^{1/2}
 \end{equation}
+
+Advantage:no wraparound errors result from not using padding.
+
+优点：不会有因未使用填充而导致的缠绕错误。
 
 \subsection{Implementation 实现}
 
@@ -1503,6 +1514,8 @@ Eq\ref{4.63} indicates that if we substitute $F^{*}(u,v)$ into an algorithm desi
  
 式\ref{4.63}指出， 如果我们把$F^{*}(u,v)$带入计算二维傅里叶正变换所设计的算法中，结果将是$MN*f(x,y)$。取复共轭并将该结果除以$MN$，将得到$f(x,y)$。但也是引起混乱的常见原因。
 
+
+
 \subsubsection{The Fast Fourier Transform(FFT) 快速傅里叶变换}
 
 $MN\log _{2}MN$ multiplications and additions
@@ -1513,13 +1526,19 @@ USE Separability of the 2-D DFT.
 
 这里也用到了二维DFT的可分性。
 
+\subsection{Summery}%总结
 
+Spatial filters can be used for nonlinear filtering,something we cannot do in the frequency domain，so spatial filters are more used.
 
+空间域滤波可用于非线性滤波，而频率域滤波不能，因此现在常用的还是空间域滤波。
 
+The DFT of an image will be a frequency spectrum,whose magnitude is connected with its light and the phase is connected with its location about the original position.The spectrum rotates by the same angle of a rotated image. 
 
+图像经过傅里叶变换会产生频谱图，幅值表现为对应点的亮度，相位表示相对于原始位置的偏移量。原图形旋转傅里叶也会跟着旋转相同角度。
 
+The low frequencies correspond to the slowly varying intensity components of an image while the high frequencies correspond to faster intensity changes. 
 
-
+低频代表变化缓慢的部分，高频代表细节部分。高频部分越亮（幅值越大）代表细节部分越明显,低频部分越亮（幅值越大）代表变化缓慢的部分所占的比例较多。提取边缘的时候是不是就是先把低频滤掉？
 
 
  
