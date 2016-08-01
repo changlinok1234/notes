@@ -1,0 +1,239 @@
+# depslib dependency file v1.0
+1456559524 source:/home/changlin/program/codeblocks/lbpruchen/classifierSVM.cpp
+	"classifierSVM.h"
+
+1456558256 /home/changlin/program/codeblocks/lbpruchen/classifierSVM.h
+	<opencv2/core.hpp>
+	<opencv2/ml.hpp>
+	<fstream>
+	<iostream>
+	"extractFeature.h"
+	"LBPextract.h"
+	"WriteData.h"
+	"tpca.h"
+
+1449410952 /home/changlin/program/codeblocks/lbpruchen/extractFeature.h
+	<opencv/cv.h>
+	<opencv2/opencv.hpp>
+	<opencv2/core.hpp>
+	<opencv2/highgui.hpp>
+	<opencv2/imgproc.hpp>
+	<opencv2/features2d.hpp>
+	<opencv2/xfeatures2d.hpp>
+	<iostream>
+	<stdio.h>
+	<fstream>
+
+1449410984 /home/changlin/program/codeblocks/lbpruchen/LBPextract.h
+	<opencv2/core.hpp>
+	<opencv2/highgui.hpp>
+	<opencv2/imgproc.hpp>
+	<iostream>
+	<stdio.h>
+	<fstream>
+	"lbp.hpp"
+	"histogram.hpp"
+
+1440679696 /home/changlin/program/codeblocks/lbpruchen/lbp.hpp
+	<opencv/cv.h>
+	<limits>
+
+1440679696 /home/changlin/program/codeblocks/lbpruchen/histogram.hpp
+	<opencv/cv.h>
+	<limits>
+	<iostream>
+
+1449411018 /home/changlin/program/codeblocks/lbpruchen/WriteData.h
+	<opencv2/core.hpp>
+	<iostream>
+	<stdio.h>
+	<fstream>
+
+1456492492 /home/changlin/program/codeblocks/lbpruchen/tpca.h
+	<opencv/cv.h>
+	<opencv2/core.hpp>
+	<opencv2/ml.hpp>
+	<iostream>
+	<fstream>
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/highgui/highgui.hpp"
+
+1456499378 source:/home/changlin/program/codeblocks/lbpruchen/confusionMatrix.cpp
+	"confusionMatrix.h"
+
+1456048684 /home/changlin/program/codeblocks/lbpruchen/confusionMatrix.h
+	<opencv2/core.hpp>
+	<fstream>
+	"WriteData.h"
+
+1456584010 source:/home/changlin/program/codeblocks/lbpruchen/extractFeature.cpp
+	"extractFeature.h"
+
+1456499382 source:/home/changlin/program/codeblocks/lbpruchen/histogram.cpp
+	"histogram.hpp"
+	<vector>
+
+1440679696 source:/home/changlin/program/codeblocks/lbpruchen/lbp.cpp
+	"lbp.hpp"
+
+1456499384 source:/home/changlin/program/codeblocks/lbpruchen/LBPextract.cpp
+	"LBPextract.h"
+
+1456573319 source:/home/changlin/program/codeblocks/lbpruchen/main.cpp
+	<opencv/cv.h>
+	<opencv2/core.hpp>
+	<opencv2/ml.hpp>
+	<iostream>
+	"pathAndLabeltrain.h"
+	"pathAndLabeltest.h"
+	"LBPextract.h"
+	"extractFeature.h"
+	"WriteData.h"
+	"confusionMatrix.h"
+	"classifierSVM.h"
+	"tpca.h"
+	<fstream>
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/highgui/highgui.hpp"
+
+1449411010 /home/changlin/program/codeblocks/lbpruchen/pathAndLabeltrain.h
+	<opencv2/core.hpp>
+	<fstream>
+	<iostream>
+
+1449411004 /home/changlin/program/codeblocks/lbpruchen/pathAndLabeltest.h
+	<opencv2/core.hpp>
+	<fstream>
+	<iostream>
+
+1456554536 source:/home/changlin/program/codeblocks/lbpruchen/pathAndLabeltest.cpp
+	"pathAndLabeltest.h"
+
+1456554540 source:/home/changlin/program/codeblocks/lbpruchen/pathAndLabeltrain.cpp
+	"pathAndLabeltrain.h"
+
+1456048686 source:/home/changlin/program/codeblocks/lbpruchen/WriteData.cpp
+	"WriteData.h"
+
+1456585079 source:/home/changlin/program/codeblocks/lbpruchen/tpca.cpp
+	"tpca.h"
+
+1456559524 source:/home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/classifierSVM.cpp
+	"classifierSVM.h"
+
+1456558256 /home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/classifierSVM.h
+	<opencv2/core.hpp>
+	<opencv2/ml.hpp>
+	<fstream>
+	<iostream>
+	"extractFeature.h"
+	"LBPextract.h"
+	"WriteData.h"
+	"tpca.h"
+
+1449410952 /home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/extractFeature.h
+	<opencv/cv.h>
+	<opencv2/opencv.hpp>
+	<opencv2/core.hpp>
+	<opencv2/highgui.hpp>
+	<opencv2/imgproc.hpp>
+	<opencv2/features2d.hpp>
+	<opencv2/xfeatures2d.hpp>
+	<iostream>
+	<stdio.h>
+	<fstream>
+
+1449410984 /home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/LBPextract.h
+	<opencv2/core.hpp>
+	<opencv2/highgui.hpp>
+	<opencv2/imgproc.hpp>
+	<iostream>
+	<stdio.h>
+	<fstream>
+	"lbp.hpp"
+	"histogram.hpp"
+
+1440679696 /home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/lbp.hpp
+	<opencv/cv.h>
+	<limits>
+
+1440679696 /home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/histogram.hpp
+	<opencv/cv.h>
+	<limits>
+	<iostream>
+
+1449411018 /home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/WriteData.h
+	<opencv2/core.hpp>
+	<iostream>
+	<stdio.h>
+	<fstream>
+
+1456492492 /home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/tpca.h
+	<opencv/cv.h>
+	<opencv2/core.hpp>
+	<opencv2/ml.hpp>
+	<iostream>
+	<fstream>
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/highgui/highgui.hpp"
+
+1456499378 source:/home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/confusionMatrix.cpp
+	"confusionMatrix.h"
+
+1456048684 /home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/confusionMatrix.h
+	<opencv2/core.hpp>
+	<fstream>
+	"WriteData.h"
+
+1456621800 source:/home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/extractFeature.cpp
+	"extractFeature.h"
+
+1456499382 source:/home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/histogram.cpp
+	"histogram.hpp"
+	<vector>
+
+1440679696 source:/home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/lbp.cpp
+	"lbp.hpp"
+
+1456499384 source:/home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/LBPextract.cpp
+	"LBPextract.h"
+
+1456573319 source:/home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/main.cpp
+	<opencv/cv.h>
+	<opencv2/core.hpp>
+	<opencv2/ml.hpp>
+	<iostream>
+	"pathAndLabeltrain.h"
+	"pathAndLabeltest.h"
+	"LBPextract.h"
+	"extractFeature.h"
+	"WriteData.h"
+	"confusionMatrix.h"
+	"classifierSVM.h"
+	"tpca.h"
+	<fstream>
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/highgui/highgui.hpp"
+
+1449411010 /home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/pathAndLabeltrain.h
+	<opencv2/core.hpp>
+	<fstream>
+	<iostream>
+
+1449411004 /home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/pathAndLabeltest.h
+	<opencv2/core.hpp>
+	<fstream>
+	<iostream>
+
+1456554536 source:/home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/pathAndLabeltest.cpp
+	"pathAndLabeltest.h"
+
+1456554540 source:/home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/pathAndLabeltrain.cpp
+	"pathAndLabeltrain.h"
+
+1456585079 source:/home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/tpca.cpp
+	"tpca.h"
+
+1456048686 source:/home/changlin/program/codeblocks/lbpsurfsvm_code/lbpsurfsvmpca/WriteData.cpp
+	"WriteData.h"
+
