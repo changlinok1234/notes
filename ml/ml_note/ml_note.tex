@@ -268,7 +268,7 @@ $ \boldsymbol{\omega}^{T}\boldsymbol{x}+b>0$; 若 $y_{i}=-1$, $ \boldsymbol{\ome
 \end{array} \right.
 \end{equation}
 
-如图\ref{6-2}, 距离超平面最近的几个样本点使式\ref{6.3}的等号成立,每个样本点对应一个特征向量, 他们被称为``支持向量", 两个异类支持向量到超平面的距离和:
+如图\ref{6-2}, 距离超平面最近的几个样本点使式\ref{6-3}的等号成立,每个样本点对应一个特征向量, 他们被称为``支持向量", 两个异类支持向量到超平面的距离和:
 
 \begin{equation}
 \gamma=\frac{2}{\parallel \boldsymbol{\omega} \parallel}
@@ -364,7 +364,7 @@ f(\boldsymbol{x})=\boldsymbol{\omega}^{T}\boldsymbol{x}+b=\sum_{i=1}^{m}\alpha_{
 
 于是,对于任意训练样本$(\boldsymbol{x}_{i},y_{i})$,总有$\alpha_{i}=0$或$y_{i}f(\boldsymbol{x}_{i}) =1$. 若$\alpha_{i}=0$, 则该样本不会在式\ref{6-12}中出现,也就不会对$f(\boldsymbol{x})$产生影响;若$\alpha_{i} > 0$, 则必有$y_{i}f(\boldsymbol{x}_{i})=1$,所对应的样本点位于最大间隔边界上,是一个支持向量.因此,{\color{red}{训练完成后,大部分的训练样本都不需要保留,最终模型仅与支持向量有关.}}
 
-此外,{\color{blue}求解式\ref{6-11},可以用SMO算法.}
+此外,{\color{blue}求解式\ref{6-11},可以用SMO算法.}(见svm程序部分)
 
 \subsection{核函数}
 
