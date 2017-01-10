@@ -222,7 +222,7 @@
 
 \subsection{评估方法}
 
-现实中要考虑时间开销,存储开销(这俩也算是降维兴起的原因),可解释性等方面因素,这里只考虑泛化误差.
+现实中要考虑时间开销,存储开销,可解释性等方面因素,这里只考虑泛化误差.
 
 \subsubsection{留出法}
 
@@ -238,10 +238,26 @@
 
 假定D包含m个样本,若令k=m, 得到特例: 留一法 (Leave-One-Out, LOO)
 
+
+
+
+
+
+
+
+
 %%----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 \section{支持向量机}
 
 \subsection{间隔与支持向量}
+
+机器学习中可以用于分类或者回归问题. 这里主要是分类.
+
+超平面: 二维空间的超平面是一条直线，三维空间的超平面是一个平面，而N维空间的超平面则是N-1维的仿射空间.
+
+超平面性质: 将空间分成两部分，一部分大于0，一部分小于0.
+
+凸二次规划问题: \url{https://zhidao.baidu.com/question/281998847.html}
 
 样本空间中划分超平面:
 
@@ -268,12 +284,14 @@ $ \boldsymbol{\omega}^{T}\boldsymbol{x}+b>0$; 若 $y_{i}=-1$, $ \boldsymbol{\ome
 \end{array} \right.
 \end{equation}
 
+\textcolor[rgb]{0.2,0.3,0.6}{注: 若存在超平面 $(\boldsymbol{\omega}', b')$ 能将训练样本正确分类, 则总存在缩放变换 $\zeta \boldsymbol{\omega} \longmapsto \boldsymbol{\omega}'$ 和 $\zeta b \longmapsto b'$ 使式\ref{6-3}成立.}
+
 如图\ref{6-2}, 距离超平面最近的几个样本点使式\ref{6-3}的等号成立,每个样本点对应一个特征向量, 他们被称为``支持向量", 两个异类支持向量到超平面的距离和:
 
 \begin{equation}
 \gamma=\frac{2}{\parallel \boldsymbol{\omega} \parallel}
 \end{equation}
-称为``间隔"(margin).
+称为``间隔"(margin)(这里的"间隔"指几何间隔).
 \begin{figure}
 \centering\includegraphics[width=5in]{6-2.jpg}
 \caption{支持向量与间隔}
@@ -315,7 +333,7 @@ f(x)=\boldsymbol{\omega}^{T}\boldsymbol{x}+b
 \label{6-7}
 \end{equation}
 
-对式\ref{6-6}使用拉格朗日乘子法可得到其``对偶问题"(线性规划有一个有趣的特性，就是任何一个求极大的问题都有一个与其匹配的求极小的线性规划问题). 对\ref{6-6}每条约束添加拉格朗日乘子$\alpha_{i} \geqslant 0$,拉格朗日函数可写为
+对式\ref{6-6}使用拉格朗日乘子法可得到其``对偶问题"(线性规划有一个有趣的特性，就是任何一个求极大的问题都有一个与其匹配的求极小的线性规划问题). 对偶问题可以更高效地求解模型参数$\boldsymbol{\omega}, b$, 对\ref{6-6}每条约束添加拉格朗日乘子$\alpha_{i} \geqslant 0$,拉格朗日函数可写为
 
 \begin{equation}
 L(\boldsymbol{\omega},b,\boldsymbol{\alpha})=\frac{\parallel \boldsymbol{\omega} \parallel^{2}}{2}+\sum_{i=1}^{m}\alpha_{i}(1-y_{i}(\boldsymbol{\omega}^{T}\boldsymbol{x}_{i}+b))
@@ -345,6 +363,8 @@ s.t. \quad \sum_{i=1}^{m}\alpha_{i}y_{i} = 0,  \\
 \label{6-11}
 \end{equation}
 
+(这里的对偶问题式子里没出现b, 貌似因为式\ref{6-6}里显示间隔只和 $\boldsymbol{\omega}$ 有关,所以这里把b 那项忽略了)
+
 解出$\boldsymbol{\alpha}$, 求出$\boldsymbol{\omega}$与$b$即可得到模型
 
 \begin{equation}
@@ -362,13 +382,42 @@ f(\boldsymbol{x})=\boldsymbol{\omega}^{T}\boldsymbol{x}+b=\sum_{i=1}^{m}\alpha_{
 \end{array} \right.
 \end{equation}
 
+(关于KKT条件和拉格朗日乘子的详细解释: \url{http://blog.csdn.net/xianlingmao/article/details/7919597})
+
 于是,对于任意训练样本$(\boldsymbol{x}_{i},y_{i})$,总有$\alpha_{i}=0$或$y_{i}f(\boldsymbol{x}_{i}) =1$. 若$\alpha_{i}=0$, 则该样本不会在式\ref{6-12}中出现,也就不会对$f(\boldsymbol{x})$产生影响;若$\alpha_{i} > 0$, 则必有$y_{i}f(\boldsymbol{x}_{i})=1$,所对应的样本点位于最大间隔边界上,是一个支持向量.因此,{\color{red}{训练完成后,大部分的训练样本都不需要保留,最终模型仅与支持向量有关.}}
 
 此外,{\color{blue}求解式\ref{6-11},可以用SMO算法.}(见svm程序部分)
 
+Sequential Minimal Optimization (SMO) 基本思路: 先固定$\alpha_{i}$以外的所有参数,然后求$\alpha_{i}$上的极值. 由于存在约束 $ \sum_{i=1}^{m}\alpha_{i}y_{i} = 0$, 若固定$\alpha_{i}$以外的其他变量, $\alpha_{i}$可由其他变量导出.
+
+在参数初始化后, SMO不断执行如下两个步骤直至收敛:
+
+\begin{itemize}
+\item 选取一对需更新的变量$\alpha_{i}$和$\alpha_{j}$ (为了满足约束条件$ \sum_{i=1}^{m}\alpha_{i}y_{i} = 0$,所以每次需更新一对)
+
+\item 固定$\alpha_{i}$和$\alpha_{j}$ , 求解式\ref{6-11}获得更新后的$\alpha_{i}$和$\alpha_{j}$ .
+\end{itemize}
+
+SMO的变量选取方式: 使选取的两变量所对应样本之间的间隔最大.
+
+偏移项$b$的确定: 对任意支持向量$(\boldsymbol{x}_{s},y_{s})$都有$y_{s}f(\boldsymbol{x}_{s})=1$, 即
+
+\begin{equation}
+y_{s}(\sum_{i \in S}\alpha_{i}y_{i}\boldsymbol{x}_{i}^{T}\boldsymbol{x}_{s}+b)=1
+\label{6-17}
+\end{equation}
+
+$S=\{i\mid \alpha_{i} > 0, i=1, 2, \ldots, m\}$为所有支持向量的下标集. 理论上, 可选任意支持向量并通过式\ref{6-17}获得$b$, 实际中:
+
+\begin{equation}
+b=\frac{1}{\mid S\mid}\sum_{s\in S}(y_{s}-\sum_{i \in S}\alpha_{i}y_{i}\boldsymbol{x}_{i}^{T}\boldsymbol{x}_{s})
+\end{equation}
+
+
+
 \subsection{核函数}
 
-不是所有的原始样本空间都存在能正确划分两类样本的超平面.可将样本从原始空间映射到一个更高维的特征空间. 如果原始空间是有限维,那么一定存在一个高维特征空间使样本可分.
+不是所有的原始样本空间都存在能正确划分两类样本的超平面.可将样本从\textbf{原始空间}映射到一个\textbf{更高维的特征空间}. 如果原始空间是有限维,那么一定存在一个高维特征空间使样本可分.
 
 令$\Phi(\boldsymbol{x})$表示将$\boldsymbol{x}$映射后的特征向量,在特征空间中划分超平面所对应的模型为
 
@@ -393,7 +442,7 @@ s.t. \quad \sum_{i=1}^{m}\alpha_{i}y_{i} = 0,  \\
 \kappa(\boldsymbol{x}_{i},\boldsymbol{x}_{j})=<\Phi(\boldsymbol{x}_{i}),\Phi(\boldsymbol{x}_{j}) >=\Phi(\boldsymbol{x}_{i})^{T}\Phi(\boldsymbol{x}_{j}) 
 \end{equation}
 
-即$\boldsymbol{x}_{i}$和$\boldsymbol{x}_{j}$在特征空间的內积等于它们在原始样本空间中通过``核函数"$\kappa(.,.)$计算的结果. 式\ref{6-21}重写为
+{\color{blue}{即$\boldsymbol{x}_{i}$和$\boldsymbol{x}_{j}$在\textbf{特征空间}的內积等于它们在\textbf{原始样本空间}中通过\textbf{``核函数"$\kappa(.,.)$}计算的结果}}. 式\ref{6-21}重写为
 
 \begin{equation}
 \begin{split} 
@@ -418,9 +467,17 @@ f(\boldsymbol{x})=\boldsymbol{\omega}^{T}\Phi(\boldsymbol{x})+b \\
 式\ref{6-24}显示出模型最优解就可通过训练样本的核函数展开,这一展式也称``支持向量展示".
 
 \textbf{定理6.1 (核函数)}  \quad 令$\chi$ 为输入空间,$\kappa(.,.)$是定义在$\chi \times \chi$上的对称函数,则$\kappa$是核函数当且仅当对于任意数据$D=\{\boldsymbol{x}_{1},\boldsymbol{x}_{2},\ldots,\boldsymbol{x}_{m}\}$,``核矩阵"$K$总是半正定的.
- 定理6.1表明,只要一个对称函数所对应的核矩阵半正定,它就能作为核函数使用.
+ 定理6.1表明,只要一个对称函数所对应的核矩阵半正定,它就能作为核函数使用.事实上,对于一个半正定核矩阵,总能找到一个与之对应的映射$\Phi$
 
-常用核函数: 线性核,多项式核,高斯核,拉普拉斯核,Sigmoid核,还有函数组合的核.
+\textbf{常用核函数:} 
+
+线性核, \quad $ \kappa(\boldsymbol{x}_{i},\boldsymbol{x}_{j}) =  \boldsymbol{x}_{i}^{T}\boldsymbol{x}_{j}$
+
+多项式核, \quad $ \kappa(\boldsymbol{x}_{i},\boldsymbol{x}_{j}) =  (\boldsymbol{x}_{i}^{T}\boldsymbol{x}_{j})^{d}$
+
+高斯核(亦称RBF核),  \quad $\kappa(\boldsymbol{x}_{i},\boldsymbol{x}_{j}) =  exp(-\frac{\Vert \boldsymbol{x}_{i} - \boldsymbol{x}_{j}\Vert^{2}}{2\sigma ^{2}}) $
+
+拉普拉斯核,  Sigmoid核,还有函数组合的核.
 
 \subsection{软间隔与正则化}
 
@@ -448,6 +505,8 @@ y_{i}(\boldsymbol{\omega}^{T}\boldsymbol{x}_{i}+b) \geqslant 1
 \label{6-29}
 \end{equation}
 
+(原来的是那个${\underset{\boldsymbol{\omega},b}{min}} \quad \dfrac{1}{2}||\omega||^{2}$)
+
 $C>0$是常数, $l_{0/1}$是``$0/1$损失函数"
 
 \begin{equation}
@@ -460,15 +519,115 @@ l_{0/1}(z)=
 
 当$C$为无穷大时,式\ref{6-29}迫使所有样本均满足约束\ref{6-28}(不满足的话,\ref{6-29}会无穷大),\ref{6-29}等价于\ref{6-6}; $C$取有限值时,\ref{6-29}允许一些样本不满足约束.
 
-$l_{0/1}$使式\ref{6-29}不易直接求解,常用其他函数替代之,称``替代损失". 之后对\ref{6-29}用替代损失函数,引入松弛变量,构造拉格朗日函数.......
+$l_{0/1}$非凸,非连续,数学性质不太好,使式\ref{6-29}不易直接求解(??),常用其他函数替代之,称``替代损失". 替代损失函数一般具有较好的数学性质,如通常是凸的连续函数且是$l_{0/1}$的上界(这个也算优点???!!!). 三种常用替代损失函数(图\ref{6.5}):
 
-不管用什么损失函数,模型具有一个共性:目标的第一项用来描述划分超平面的``间隔"大小,另一项用来表述训练集上的误差(参照\ref{6-29}),更一般的形式:(``正则化"问题)
+hinge损失: 
+\begin{equation}
+l_{hinge}(z) = max(0, 1 - z);
+\end{equation}
+
+指数损失(exponential loss): 	
+\begin{equation}
+l_{exp}(z) = exp( - z);
+\end{equation}
+
+对率损失(logistic loss): 
+\begin{equation}
+l_{log}(z) = log(1+exp( - z));
+\end{equation}
+
+
+
+%\begin{comment}
+\begin{figure}
+\centering\includegraphics[width=6in]{6-5.jpg}
+\caption{三种常见的替代损失函数:hinge损失, 指数损失, 对率损失}
+\label{6.5}
+\end{figure}
+%\end{comment}
+
+若采用hinge损失, 式\ref{6-29}变成
+
+\begin{equation}
+{\underset{\boldsymbol{\omega},b}{min}} \quad \dfrac{1}{2}\Vert \boldsymbol{\omega}\Vert^{2}+C\sum_{i=1}^{m}max(0, 1-y_{i}(\boldsymbol{\omega}^{T}\boldsymbol{x}_{i}+b))
+\label{6-34}
+\end{equation}
+
+引入''松弛变量''(slack variables) $\xi_{i} \geqslant 0$, 式\ref{6-34}重写为
+
+\begin{equation}
+\begin{split}
+{\underset{\boldsymbol{\omega},b,\xi_{i}}{min}} \quad \dfrac{1}{2}\Vert \boldsymbol{\omega}\Vert^{2}+C\sum_{i=1}^{m}\xi_{i}  \\
+s.t.	\qquad    y_{i}(\boldsymbol{\omega}^{T}\boldsymbol{x}_{i} + b) \geqslant 1-\xi_{i}         \\
+\xi_{i} \geqslant 0, \quad i=1,2, \ldots, m.
+\end{split}
+\label{6-35}
+\end{equation}
+
+这就是常用的''软间隔支持向量机".
+
+式\ref{6-35}中每个样本都有一个对应的松弛变量, 用以表征该样本不满足约束\ref{6-28}的程度. 与\ref{6-6}相似,这也是一个凸二次规划问题. 通过拉格朗日乘子法可得到式\ref{6-35}的拉格朗日函数
+
+\begin{equation}
+L(\boldsymbol{\omega}, b, \boldsymbol{\alpha}, \boldsymbol{\xi}, \boldsymbol{\mu}) = \frac{1}{2}\Vert \boldsymbol{\omega} \Vert ^{2} + C\sum_{i=1}^{m}\xi_{i} + \sum_{i=1}^{m}\alpha_{i}(1 - \xi_{i} - y_{i}(\boldsymbol{\omega}^{T}\boldsymbol{x}_{i} + b)) - \sum_{i=1}^{m}\mu_{i}\xi_{i}
+\label{6-36}
+\end{equation}
+
+$\alpha_{i} \geqslant 0, \mu_{i} \geqslant 0$ 是拉格朗日乘子.
+
+令$L$对$\boldsymbol{\omega}, b,\xi_{i}$的偏导为零可得
+
+\begin{equation}
+\boldsymbol{\omega} = \sum_{i=1}^{m} \alpha_{i}y_{i}\boldsymbol{x}_{i} ,
+\label{6-37}
+\end{equation}
+
+\begin{equation}
+0 = \sum_{i=1}^{m}\alpha_{i}y_{i} ,
+\label{6-38}
+\end{equation}
+
+\begin{equation}
+C = \alpha_{i} + \mu_{i}
+\label{6-39}
+\end{equation}
+
+式\ref{6-37}-\ref{6-39}代入式\ref{6-36}可得到式\ref{6-35}的对偶问题
+
+\begin{equation}
+\begin{split}
+{\underset{\boldsymbol{\alpha}}{max}} \quad \sum_{i=1}^{m}\alpha_{i} - \frac{1}{2} \sum_{i=1}^{m}\sum_{j=1}^{m}\alpha_{i}\alpha_{j}y_{i}y_{j}\boldsymbol{x}_{i}^{T}\boldsymbol{x}_{j}      \\
+s.t.  \qquad  \sum_{i=1}^{m}\alpha_{i}y_{i} = 0,            \\
+0 \leqslant \alpha_{i} \leqslant C, \qquad i =1, 2, \ldots, m.  
+\end{split}
+\label{6-40}
+\end{equation}
+
+同样可采用SMO优化算法,核函数方法等解式\ref{6-40}.
+
+对软间隔支持向量机, KKT条件:
+
+\begin{equation}
+ \left\{ \begin{array}{ll||}
+ \alpha_{i} \geqslant 0, \quad \mu_{i} \geqslant 0 , \\
+ y_{i}f(\boldsymbol{x}_{i}) - 1 + \xi_{i} \geqslant 0 ,  \\
+ \alpha_{i}(y_{i}f(\boldsymbol{x}_{i}) - 1 + \xi_{i}) = 0, \\
+ \xi_{i} \geqslant 0, \quad \mu_{i}\xi_{i} = 0  
+ \end{array}  \right.
+\end{equation}
+
+若$\alpha_{i} = 0$, 则该样本不会对$f(\boldsymbol{x}$有任何影响; 若$\alpha_{i} > 0$, 必有$y_{i}f(\boldsymbol{x}_{i}) = 1 - \xi_{i}$, 即该样本是{\color{red}支持向量:}由式\ref{6-39}可知, 若$\alpha_{i} < C$, 则$\mu_{i} > 0$, 进而$\xi_{i} = 0$, 该样本恰在最大间隔边上; 若$\alpha_{i} = C$, 有$\mu_{i} = 0$, 此时若$\xi_{i} \leqslant 1$则该样本落在最大间隔内部, 若$\xi_{i} > 1$则样本被错误分类. 因此, 软间隔支持向量机的最终模型仅与支持向量有关, 即采用hinge损失函数仍保持了稀疏性(图中hinge损失函数有块''平坦"的零区域, 使得svm的解具有稀疏性).
+
+式\ref{6-29}的 $0/1$ 损失函数换成别的替代损失函数可得到其他学习模型. 不管用什么损失函数,模型具有一个共性:目标的第一项用来描述划分超平面的``间隔"大小,另一项用来表述训练集上的误差(参照\ref{6-29}),更一般的形式:(``正则化"问题)
 
 \begin{equation}
 {\underset{f}{min}} \quad \Omega(f)+C\sum_{i=1}^{m}l(f(\boldsymbol{x}_{i}),y_{i}) 
+\label{6-42}
 \end{equation}
 
-以后可能还会补充......
+$\Omega(f)$为''结构风险"(structural risk), 用于描述模型$f$的某些性质; $\sum_{i=1}^{m}l(f(\boldsymbol{x}_{i}),y_{i})$称为''经验风险" (empirical risk), 描述与训练数据的契合程度; $C$用于对二者进行折中. 从经验风险最小化角度来看, $\Omega(f)$ 表述了我们希望获得具有何种性质的模型(例如希望获得复杂度较小的模型), 这为引入领域知识和用户意图提供了途径; 另一方面, 该信息有助于削减假设空间, 从而降低了最小化训练误差的过拟合风险(??why?). 从这个角度说, 式u\ref{6-42}称为''正则化"(regularization)问题, $\Omega(f)$称为正则化项, $C$ 为正则化常数. $L_{p}$范数(norm)是常用的正则化项.
+
+软间隔''软"在哪儿?
 
 \subsection{支持向量回归}
 
@@ -486,6 +645,7 @@ SVR问题可形式化为
 
 \begin{equation}
 {\underset{\boldsymbol{\omega},b}{min}} \quad \frac{1}{2}\parallel\boldsymbol{\omega}\parallel^{2}+C\sum_{i=1}^{m}l_{\varepsilon}(f(\boldsymbol{x}_{i})-y_{i})
+\label{6-43}
 \end{equation}
 
 $C$为正则化常数,$l_{\varepsilon}$是$\epsilon-$不敏感损失
@@ -498,15 +658,175 @@ l_{\epsilon}(z)=
 \end{array} \right.
 \end{equation}
 
-引入松弛变量,拉格朗日函数,对偶问题,KKT,核函数.........
+引入松弛变量 $\xi_{i}和\hat{\xi_{i}}$, 式\ref{6-43}可重写为
 
-SVR可表示为
+\begin{equation}
+\begin{split}
+{\underset{\boldsymbol{\omega},b,\xi_{i},\hat{\xi_{i}}}{min}} \quad \frac{1}{2}\parallel\boldsymbol{\omega}\parallel^{2}+C\sum_{i=1}^{m}(\xi_{i}+\hat{\xi_{i}}) \\
+s.t. \qquad f(\boldsymbol{x}_{i})-y_{i} \leq \epsilon + \xi_{i} \\
+      y_{i}-f(\boldsymbol{x}_{i}) \leq \epsilon + \hat{\xi_{i}} \\
+      \xi_{i} \geq 0, \quad \hat{\xi_{i}} \geq 0, \quad i=1,2,...,m.
+\end{split}
+\label{6-45}
+\end{equation}
+
+通过引入拉格朗日乘子 $\mu_{i} \geq 0, \hat{\mu}_{i} \geq 0, \alpha_{i} \geq 0, \hat{\alpha}_{i} \geq 0$, 由拉格朗日乘子法可得到式 \ref{6-45} 的拉格朗日函数
+
+
+\begin{equation}
+\begin{split}
+L(\boldsymbol{\omega}, b, \boldsymbol{\alpha}, \hat{\boldsymbol{\alpha}}, \boldsymbol{\xi}, \hat{\boldsymbol{\xi}}, \boldsymbol{\mu}, \hat{\boldsymbol{\mu}})  \\
+= \frac{1}{2}\parallel\boldsymbol{\omega}\parallel^{2}+C\sum_{i=1}^{m}(\xi_{i}+\hat{\xi}_{i}) - \sum_{i=1}^{m}\mu_{i}\xi_{i} - \sum_{i=1}^{m}\hat{\m u}_{i}\hat{\xi}_{i}  \\
+ + \sum_{i=1}^{m}\alpha_{i}(f(\boldsymbol{x}_{i}) - y_{i} - \epsilon -\xi_{i}) + \sum_{i=1}^{m}\hat{\alpha}_{i}(y_{i} - f(\boldsymbol{x}_{i}) -  \epsilon -                        
+ \hat{\xi}_{i}) 
+\end{split}
+\label{6-46}
+\end{equation}
+
+将式\ref{6-7}代入, 令$L()$对$\boldsymbol{\omega}, b, \xi_{i}, \hat{\xi}_{i}$的偏导为0可得
+
+\begin{equation}
+\boldsymbol{\omega}=\sum_{i=1}^{m}(\hat{\alpha}_{i}-\alpha_{i})\boldsymbol{x}_{i},
+\label{6-47}
+\end{equation}
+
+\begin{equation}
+0=\sum_{i=1}^{m}(\hat{\alpha}_{i}-\alpha_{i}),
+\label{6-48}
+\end{equation}
+
+\begin{equation}
+C=\alpha_{i} + \mu_{i}
+\label{6-49}
+\end{equation}
+
+\begin{equation}
+C=\hat{\alpha}_{i} +\hat{\mu}_{i}
+\label{6-50}
+\end{equation}
+
+将式 \ref{6-47} - \ref{6-50}代入式 \ref{6-46}, 即可得到svr的对偶问题
+
+\begin{equation}
+\begin{split}
+{\underset{\boldsymbol{\alpha},\boldsymbol{\hat{\alpha}}}{max}} \quad \sum_{i=1}^{m}y_{i}(\hat{alpha}_{i} - \alpha_{i}) - \epsilon(\hat{\alpha}_{i} + \alpha_{i}) \\
+- \frac{1}{2}\sum_{i=1}^{m}\sum_{j=1}^{m}(\hat{\alpha}_{i} - \alpha_{i})(\hat{\alpha}_{j} - \alpha_{j})\boldsymbol{x}_{i}^{T}\boldsymbol{x}_{j}  \\
+s.t. \qquad \sum_{i=1}^{m}(\hat{\alpha}_{i} - \alpha_{i}) = 0 \\
+0 \leq \alpha_{i}, \hat{\alpha}_{i} \leq C
+\end{split}
+\label{6-51}
+\end{equation}
+
+上述过程需满足KKT条件:
+\begin{equation}
+ \left\{ \begin{array}{ll}
+ \alpha_{i}(f(\boldsymbol{x}_{i}) - y_{i} - \epsilon - \xi_{i})=0, \\
+ \hat{\alpha}_{i}(y_{i}-f(\boldsymbol{x}_{i}) - \epsilon - \hat{\xi}_{i}), \\
+ \alpha_{i}\hat{\alpha}_{i} = 0, \xi_{i}\hat{\xi}_{i} = 0, \\
+ (C - \alpha_{i})\xi_{i} = 0, (C - \hat{\alpha}_{i})\hat{\xi}_{i} = 0.
+\end{array} \right.
+\label{6-52}
+\end{equation}
+
+当且仅当$f(\boldsymbol{x}_{i}) - y_{i} - \epsilon - \xi_{i}=0$时$\alpha_{i}$能取非零值, 当且仅当$y_{i}-f(\boldsymbol{x}_{i}) - \epsilon - \hat{\xi}_{i}=0$是$\hat{\alpha}_{i}$能取非零值. 即, 仅当样本$(\boldsymbol{x}_{i},y_{i})$不落入$\epsilon - $间隔带中, 相应的$\alpha_{i}$和$\hat{\alpha}_{i}$才能取非零值. 此外, 约束$f(\boldsymbol{x}_{i}) - y_{i} - \epsilon - \xi_{i}=0$和$y_{i}-f(\boldsymbol{x}_{i}) - \epsilon - \hat{\xi}_{i}=0$不能同时成立(???), 因此$\alpha_{i}$和$\hat{\alpha}_{i}$至少有一个是零.
+
+式\ref{6-47}代入式\ref{6-7}, 则SVR的解形如
+
+\begin{equation}
+f(\boldsymbol{x}) = \sum_{i=1}^{m}(\hat{\alpha}_{i}-\alpha_{i})\boldsymbol{x}_{i}^{T}\boldsymbol{x} + b
+\label{6-53}
+\end{equation}
+
+能使式\ref{6-53}中的$\hat{\alpha}_{i}-\alpha_{i} \neq 0$ 的样本即为SVR的支持向量??? 它们必落在 $\epsilon - $间隔带之外(落在间隔带中的样本$\alpha$都是零). SVR的支持向量仅是训练样本的一部分,其解仍具有稀疏性. 
+
+由式\ref{6-52}, 对每个样本$(\\boldsymbol{x}_{i}, y_{i})$ 都有$ (C - \alpha_{i})\xi_{i} = 0$ 且  $\alpha_{i}(f(\boldsymbol{x}_{i}) - y_{i} - \epsilon - \xi_{i})=0$ 
+
+. 故若$0 < \alpha_{i} < C$, 必有$\xi_{i} = 0$, 进而
+
+\begin{equation}
+b=y_{i}+\epsilon -  \sum_{i=1}^{m}(\hat{\alpha}_{i}-\alpha_{i})\boldsymbol{x}_{i}^{T}\boldsymbol{x}
+\label{6-54}
+\end{equation}
+
+在求解式\ref{6-51}得到$\alpha_{i}$后, 可任意选取满足 $0 < \alpha_{i} < C$ 的样本通过式\ref{6-54}求$b$,.实践中常选取多个(或所有)满足条件 $0 < \alpha_{i} < C$的样本求解b后取平均值, 更鲁棒.
+
+考虑特征映射(核方法),SVR可表示为
 
 \begin{equation}
 f(\boldsymbol{x})=\sum_{i=1}^{m}(\hat{\alpha}_{i}-\alpha_{i})\kappa(\boldsymbol{x},\boldsymbol{x}_{i})+b
+\label{•}
 \end{equation}
 
 \subsection{核方法}
+
+\subsection{支持向量机与多分类问题}
+
+\begin{enumerate}
+
+\item{\textbf{一对多法}}
+
+one-versus-rest(1-v-r SVMs), 训练时把某个类别的样本归为一类,其他剩余的样本归为另一类,这样k个类别的样本就构造出k个SVM. {\color{blue}分类时将未知样本分类为具有最大分类函数值的那类?}
+
+
+
+\item{\textbf{一对一法}}    
+
+libsvm中的多类分类是根据一对一(one-versus-one, 1-v-1SVMs)法实现的, 做法是在任意两类样本之间设计一个SVM, 因此k个类别的样本就需要设计k(k-1)/2个SVM, 当对一个未知样本进行分类时, 最后得票对多的类别即为该未知样本的类别. 
+
+\item{\textbf{层次支持向量机 (H-SVMs)}}
+
+首先将所有类别分成两个子类,再将子类分成两个次级子类,循环直到得到一个单独的类为止. 
+
+
+\end{enumerate}
+
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+\section{决策树}
+
+类似于只能根据判断是与否来一直划分, 直至最终确定事物类别的流程图. 决策树的一个重要任务是为了数据中所蕴含的知识信息, 因此决策树可以使用不熟悉的数据集合, 并从中提取一系列规则, 在这些机器根据数据集创建规则时, 就是机器学习的过程. 
+
+\textbf{优点: }计算复杂度不高,输出结果易于理解, 对中间值的缺失不敏感, 可以处理不相关特征数据.
+
+\textbf{缺点: }可能会产生过度匹配的问题
+
+\textbf{适用数据类型: }数值型和标称型
+
+\subsection{决策树的构造}
+
+构造决策树需要解决的第一个问题: 当前数据集上哪个特征在划分数据分类时起决定性作用. 为找到决定性的特征, 必须评估每个特征. 完成测试后,原始数据集被划分为几个数据子集.这些数据子集会分布在第一个决策点的所有分支上. 如果某个分支下的数据属于同一类型, 则已经正确地划分数据分类.无需进一步分割. 如果数据子集内的数据不属于同一类型, 则需重复划分数据子集的过程. 
+
+创建分支函数createBranch()的伪代码:
+
+\begin{lstlisting}
+检测数据集中的每个子项是否属于同一分类;
+	if so return 标签;
+	else
+		寻找划分数据集的最好特征
+		划分数据集
+		创建分支节点
+			for 每个划分的子集
+				调用函数createBranch并增加返回结果到分支节点中
+		return 分支节点
+\end{lstlisting}
+
+\subsubsection{信息增益}
+
+划分数据的最大原则是:将无序的数据变得更加有序.
+
+在划分数据集之前之后信息发生的变化成为信息增益, 计算每个特征值划分数据集获得的信息增益, 获得信息增益最高的特征就是最好的选择.
+
+\subsubsection{划分数据集}
+
+对每个特征划分数据集的结果计算一次信息熵, 然后判断按照哪个特征划分数据集是最好的划分方式.
+
+\subsubsection{构建递归决策树}
+
+递归函数的第一个停止条件是所有的类别标签完全相同, 则直接返回该类别标签. 递归函数的第二个停止条件是使用完了所有的特征,仍不能将数据集划分成仅包含唯一类别的数组. 挑选出现次数最多的类别作为返回值. 
+
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+\section{Bagging与随机森林}
 
 
 
