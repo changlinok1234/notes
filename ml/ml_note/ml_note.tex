@@ -780,6 +780,251 @@ libsvm中的多类分类是根据一对一(one-versus-one, 1-v-1SVMs)法实现�
 
 \end{enumerate}
 
+\subsubsection{Matlab LibSVM}
+参考网址:
+
+\url{http://www.matlabsky.com/forum-viewthread-tid-12379-fromuid-18677.html}
+
+\url{http://www.matlabsky.com/thread-12649-1-1.html}
+
+\url{http://www.ilovematlab.cn/thread-80099-1-1.html}
+
+
+用SVM (libsvm, lssvm, hssvm) 等等进行分类预测, 大致上要有三个步骤: 1. 训练, 2. 测试,  3. 预测
+
+\begin{description}
+\item[1. 训练] 用训练数据集，不管采用那种寻优方式，得到相对的最优参数，训练模型。
+
+\item[2. 测试] 就是用刚刚得到的模型，对测试数据进行测试，此时测试数据集的label是已知的，这主要是用来对刚刚的模型的检测，或者是对参数的检测、或者是对模型的泛化能力的检测。此时会得到一个准确率，这时的准确率是有用的，是有实际意义的，因为原来的label是已知的。
+
+\item[3. 预测] 预测就是对未知类别的样本在测试确定了模型有好的泛化能力的情况下的预测分类，这步才是真的预测能力功能的实现。此时数据的label随便给了，这样是为了满足libsvm对数据格式的要求。此时也会得到一个准确率，但是这个是没有实际意义的，因为原始的label是随便给的，没有意义，我们只是关心的是最后得到的类别号——达到分类的目的。
+\end{description}
+
+先用libsvm工具箱本身带的测试数据heart\_scale来实际进行实例测试, 
+
+\begin{lstlisting}
+%% HowToClassifyUsingLibsvm
+% by faruto @ faruto's Studio~
+% http://blog.sina.com.cn/faruto
+% Email:faruto@163.com
+% http://www.MATLABsky.com
+% http://www.mfun.la
+% http://video.ourmatlab.com
+% last modified by 2010.12.27
+%% a litte clean work
+tic;
+close all;
+clear;
+clc;
+format compact;
+%% 
+
+% 首先载入数据
+load heart_scale;
+data = heart_scale_inst;
+label = heart_scale_label;
+
+% 选取前200个数据作为训练集合，后70个数据作为测试集合
+ind = 200;
+traindata = data(1:ind,:);
+trainlabel = label(1:ind,:);
+testdata = data(ind+1:end,:);
+testlabel = label(ind+1:end,:);
+
+% 利用训练集合建立分类模型
+model = svmtrain(trainlabel,traindata,'-s 0 -t 2 -c 1.2 -g 2.8');
+
+% 分类模型model解密
+model
+Parameters = model.Parameters
+Label = model.Label
+nr_class = model.nr_class
+totalSV = model.totalSV
+nSV = model.nSV 
+
+% 利用建立的模型看其在训练集合上的分类效果
+[ptrain,acctrain] = svmpredict(trainlabel,traindata,model);
+
+% 预测测试集合标签
+[ptest,acctest] = svmpredict(testlabel,testdata,model);
+
+%%
+toc;
+\end{lstlisting}
+
+运行结果:
+
+\begin{lstlisting}
+model = 
+    Parameters: [5x1 double]
+      nr_class: 2
+       totalSV: 197
+           rho: 0.0583
+         Label: [2x1 double]
+         ProbA: []
+         ProbB: []
+           nSV: [2x1 double]
+       sv_coef: [197x1 double]
+           SVs: [197x13 double]
+Parameters =
+         0
+    2.0000
+    3.0000
+    2.8000
+         0
+Label =
+     1
+    -1
+nr_class =
+     2
+totalSV =
+   197
+nSV =
+    89
+   108
+Accuracy = 99.5% (199/200) (classification)
+Accuracy = 68.5714% (48/70) (classification)
+Elapsed time is 0.040873 seconds.
+>> 
+\end{lstlisting}
+
+model = svmtrain(trainlabel,traindata,'-s 0 -t 2 -c 1.2 -g 2.8'); 中参数的意义:
+
+\begin{description}
+
+\item[-s] SVM类型: SVM设置类型(默认0)
+
+0 -- C-SVC
+
+1 -- v-SVC
+
+2 -- 一类SVM
+
+3 -- e-SVR
+
+4 -- v-SVR
+
+\item[-t] 核函数类型: 核函数设置类型(默认2)
+
+0 -- 线性
+
+1 -- 多项式
+
+2 -- RBF函数
+
+3 -- sigmoid
+
+\item[-g] r(gama): 核函数中的gamma函数设置(针对多项式/rbf/sigmoid核函数)
+
+\item[c] cost: 设置C-SVC, e-SVR和v-SVR的参数(损失函数)(默认1) 
+
+\ldots
+\end{description}
+
+其实还有很多,详细的见 \url{http://www.matlabsky.com/thread-12380-1-1.html}
+
+\textbf{model参数解密: 还是libsvm-mat自带的heart\_scale.mat数据（270*13的一个属性据矩阵，共有270个样本，每个样本有13个属性）}
+
+\begin{lstlisting}
+%% ModelDecryption
+% by faruto @ faruto's Studio~
+% http://blog.sina.com.cn/faruto
+% Email:faruto@163.com
+% http://www.MATLABsky.com
+% http://www.mfun.la
+% http://video.ourmatlab.com
+% last modified by 2011.01.06
+%% a litte clean work
+tic;
+close all;
+clear;
+clc;
+format compact;
+%% 
+% 首先载入数据
+load heart_scale;
+data = heart_scale_inst;
+label = heart_scale_label;
+% 建立分类模型
+model = svmtrain(label,data,'-s 0 -t 2 -c 1.2 -g 2.8');
+model
+% 利用建立的模型看其在训练集合上的分类效果
+[PredictLabel,accuracy] = svmpredict(label,data,model);
+accuracy
+%%
+toc;
+\end{lstlisting}
+
+运行结果:
+
+\begin{lstlisting}
+model = 
+    Parameters: [5x1 double]
+      nr_class: 2
+       totalSV: 259
+           rho: 0.0514
+         Label: [2x1 double]
+         ProbA: []
+         ProbB: []
+           nSV: [2x1 double]
+       sv_coef: [259x1 double]
+           SVs: [259x13 double]
+Accuracy = 99.6296% (269/270) (classification)
+accuracy =
+   99.6296
+    0.0148
+    0.9851
+Elapsed time is 0.040155 seconds.
+\end{lstlisting}
+
+model.Parameters参数意义从上到下依次为：
+
+\begin{description}
+\item[-s] Svm类型
+
+\item[-t] 核函数类型
+
+\item[-d] degree: 核函数中的degree设置(针对多项式核函数)(默认3)
+
+\item[-g] r(gamma)
+
+\item[-r]  coef0：核函数中的coef0设置(针对多项式/sigmoid核函数)((默认0)
+\end{description}
+
+Libsvm中参数设置可以按照SVM的类型和核函数所支持的参数进行任意组合，如果设置的参数在函数或SVM类型中没有也不会产生影响，程序不会接受该参数；如果应有的参数设置不正确，参数将采用默认值。
+
+\begin{description}
+\item[model.Label] 表示数据集中类别的标签都有什么
+
+\item[model.nr\_class] 表示数据集中有多少类别
+
+\item[model.totalSV] 总共的支持向量的数目,这里有259个
+
+\item[model.nSV] 每类样本的支持向量的数目, 这里的顺序是和model.Label对应的
+
+\item[model.ProbA  \&  model.ProbB] 使用-b参数时才能用到，用于概率估计
+
+\item[model.sv\_coef] 矩阵，这里承装的是259个支持向量在决策函数中的系数
+
+\item[model.SVs] 是一个259*13的稀疏矩阵，承装的是259个支持向量
+
+\item[model.rho] 是决策函数中的常数项的相反数（-b）
+\end{description}
+
+\textbf{通过 –s 0 参数（C-SVC模型）得到的最终的分类决策函数的表达式是}
+
+$plabel = sgn(\sum_{j=1}^{n}w_{j}K(x_{j}, x)) + b  $
+
+
+\begin{description}
+
+\item[model.sv\_coef(i)] 对于每一个i: wi =model.sv\_coef(i); 支持向量的系数（一个标量数字）. xi = model.SVs(i,:) 支持向量（1*13的行向量）, 这里的wi是$\alpha_{i}y_{i}$
+\end{description}
+
+
+
+
+
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 \section{决策树}
@@ -823,6 +1068,9 @@ libsvm中的多类分类是根据一对一(one-versus-one, 1-v-1SVMs)法实现�
 \subsubsection{构建递归决策树}
 
 递归函数的第一个停止条件是所有的类别标签完全相同, 则直接返回该类别标签. 递归函数的第二个停止条件是使用完了所有的特征,仍不能将数据集划分成仅包含唯一类别的数组. 挑选出现次数最多的类别作为返回值. 
+
+
+
 
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
